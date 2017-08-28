@@ -43,6 +43,7 @@ public class GenreDetailActivity extends AppCompatActivity {
     private Context context = this;
     private GenreDetailRecycleVievAdapter adapter;
     private List<GenreDetail> list = new ArrayList<>();
+    private int page = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,23 +65,22 @@ public class GenreDetailActivity extends AppCompatActivity {
                 recyclerView.post(new Runnable() {
                     @Override
                     public void run() {
-//                        Toast.makeText(getApplicationContext(), "load more coy", Toast.LENGTH_SHORT).show();
-//                        Log.d("halo", "123");
-                        loadMore();
+                        loadMore(page);
+                        page++;
                     }
                 });
             }
         });
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         recyclerView.setAdapter(adapter);
-        load();
+        load(1);
     }
 
 
-    public void load() {
-        Observable<ParentGenreDetail> observable = api.detailGenreMovie("37", this.getString(R.string.api_key), null, null, null, "1");
+    public void load(int page) {
+        Observable<ParentGenreDetail> observable = api.detailGenreMovie("37", this.getString(R.string.api_key), null, null, null, page+"");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ParentGenreDetail>() {
@@ -102,10 +102,10 @@ public class GenreDetailActivity extends AppCompatActivity {
                 });
     }
 
-    public void loadMore() {
+    public void loadMore(int page) {
         list.add(new GenreDetail(true));
         adapter.notifyItemInserted(list.size());
-        Observable<ParentGenreDetail> observable = api.detailGenreMovie("37", this.getString(R.string.api_key), null, null, null, "1");
+        Observable<ParentGenreDetail> observable = api.detailGenreMovie("37", this.getString(R.string.api_key), null, null, null, page+"");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ParentGenreDetail>() {
