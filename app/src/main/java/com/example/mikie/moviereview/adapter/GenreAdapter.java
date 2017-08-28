@@ -1,10 +1,13 @@
 package com.example.mikie.moviereview.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mikie.moviereview.R;
@@ -46,7 +49,9 @@ public class GenreAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_genre, null);
         TextView textView = (TextView) view.findViewById(R.id.custom_text);
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linier_genre);
         textView.setText(genreList.get(position).getName().toString());
+        linearLayout.setBackgroundColor(Color.LTGRAY);
         return view;
     }
 }
