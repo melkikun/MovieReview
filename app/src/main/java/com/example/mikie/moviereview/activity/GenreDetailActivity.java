@@ -1,5 +1,6 @@
 package com.example.mikie.moviereview.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class GenreDetailActivity extends AppCompatActivity {
     private GenreDetailRecycleVievAdapter adapter;
     private List<GenreDetail> list = new ArrayList<>();
     private int page = 2;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,20 +75,23 @@ public class GenreDetailActivity extends AppCompatActivity {
         });
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         recyclerView.setAdapter(adapter);
         load(1);
     }
 
 
     public void load(int page) {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("loading");
+        dialog.show();
         Observable<ParentGenreDetail> observable = api.detailGenreMovie("37", this.getString(R.string.api_key), null, null, null, page+"");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ParentGenreDetail>() {
                     @Override
                     public void onCompleted() {
-
+                        dialog.dismiss();
                     }
 
                     @Override

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu1">
+        <item
+            android:id="@+id/nav_movie"
+            android:icon="@drawable/movie"
+            android:title="Movie" />
+        <item
+            android:id="@+id/nav_tv"
+            android:icon="@drawable/tv"
+            android:title="TV Show" />
+        <item
+            android:id="@+id/nav_discover"
+            android:icon="@drawable/search"
+            android:title="Discover" />
+        <item
+            android:id="@+id/nav_people"
+            android:icon="@drawable/people"
+            android:title="Popular People" />
+    </group>
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu2">
+        <item
+            android:id="@+id/reminder"
+            android:icon="@drawable/alarm"
+            android:title="Movie" />
+    </group>
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu3">
+        <item
+            android:id="@+id/devloper"
+            android:icon="@drawable/contact"
+            android:title="Contact Developer" />
+        <item
+            android:id="@+id/google"
+            android:icon="@drawable/google"
+            android:title="Google+ Community" />
+        <item
+            android:id="@+id/unlock"
+            android:icon="@drawable/unlock"
+            android:title="Unlock Pro" />
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/setting"
+            android:title="Setting" />
+    </group>
+</menu>

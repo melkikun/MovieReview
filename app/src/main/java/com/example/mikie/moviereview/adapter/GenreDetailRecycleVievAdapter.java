@@ -60,7 +60,7 @@ public class GenreDetailRecycleVievAdapter extends RecyclerView.Adapter<Recycler
         if (getItemViewType(position) == TYPE_MOVIE) {
             MovieHolder holder1 = (MovieHolder) holder;
             if (list.get(position).getPosterPath() == null) {
-                holder1.poster.setImageResource(R.drawable.ic_image_testing);
+                holder1.poster.setImageResource(R.drawable.no_image);
             } else {
                 Glide.with(context).load(IMG + list.get(position).getPosterPath()).thumbnail(0.5f).crossFade().into(holder1.poster);
             }
