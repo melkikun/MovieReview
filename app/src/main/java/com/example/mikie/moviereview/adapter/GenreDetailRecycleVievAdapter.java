@@ -65,6 +65,7 @@ public class GenreDetailRecycleVievAdapter extends RecyclerView.Adapter<Recycler
                 Glide.with(context).load(IMG + list.get(position).getPosterPath()).thumbnail(0.5f).crossFade().into(holder1.poster);
             }
             holder1.rating.setText(list.get(position).getVoteAverage() + "");
+            holder1.judul.setText(list.get(position).getTitle());
         }
     }
 
@@ -82,6 +83,8 @@ public class GenreDetailRecycleVievAdapter extends RecyclerView.Adapter<Recycler
         ImageView poster;
         @BindView(R.id.rating)
         TextView rating;
+        @BindView(R.id.judul_movie)
+        TextView judul;
 
         public MovieHolder(View itemView) {
             super(itemView);

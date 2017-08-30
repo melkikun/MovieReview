@@ -14,7 +14,8 @@ import rx.Observable;
 
 public interface ApiMovie {
     @GET("genre/movie/list")
-    Observable<ListGenre> test(@Query("api_key") String api, @Query("language")String language);
+    Observable<ListGenre> test(@Query("api_key") String api, @Query("language") String language);
+
     @GET("genre/{id}/movies")
     Observable<ParentGenreDetail> detailGenreMovie(
             @Path("id") String id,
@@ -23,5 +24,14 @@ public interface ApiMovie {
             @Query("include_adult") String adult,
             @Query("sort_by") String sort,
             @Query("page") String page
-            );
+    );
+
+    @GET("movie/{jenis_tab}")
+    Observable<ParentGenreDetail> nowPlaying(
+            @Path("jenis") String jenis,
+            @Query("api_key") String jenis_api,
+            @Query("language") String jenis_language,
+            @Query("page") String jenis_page,
+            @Query("region") String jenis_region
+    );
 }

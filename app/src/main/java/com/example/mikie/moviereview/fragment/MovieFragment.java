@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,7 @@ public class MovieFragment extends Fragment{
         View view =  inflater.inflate(R.layout.movie_layout, container, false);
         ButterKnife.bind(this, view);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.addTab(tabLayout.newTab().setText("1"));
-        tabLayout.addTab(tabLayout.newTab().setText("2"));
+        tabLayout.addTab(tabLayout.newTab().setText("NOW PLAYING"));
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
         pager.setAdapter(adapter);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -51,6 +51,10 @@ public class MovieFragment extends Fragment{
 
             }
         });
+        tabLayout.setTabTextColors(
+                ContextCompat.getColor(getContext(), R.color.cardview_light_background),
+                ContextCompat.getColor(getContext(), R.color.cardview_light_background)
+        );
         return view;
     }
 

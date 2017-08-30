@@ -44,7 +44,7 @@ public class GenreDetailActivity extends AppCompatActivity {
     private Context context = this;
     private GenreDetailRecycleVievAdapter adapter;
     private List<GenreDetail> list = new ArrayList<>();
-    private int page = 2;
+    private int page = 45;
     private ProgressDialog dialog;
 
     @Override
