@@ -33,6 +33,9 @@ public class MovieFragment extends Fragment{
         ButterKnife.bind(this, view);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addTab(tabLayout.newTab().setText("NOW PLAYING"));
+        tabLayout.addTab(tabLayout.newTab().setText("TOP BOX OFFICE"));
+        tabLayout.addTab(tabLayout.newTab().setText("UPCOMING"));
+        tabLayout.addTab(tabLayout.newTab().setText("POPULAR"));
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
         pager.setAdapter(adapter);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

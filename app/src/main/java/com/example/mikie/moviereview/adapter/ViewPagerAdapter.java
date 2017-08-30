@@ -22,6 +22,12 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 return new MovieNowPlaying();
+            case 1:
+                return new MovieNowPlaying();
+            case 2:
+                return new MovieNowPlaying();
+            case 3:
+                return new MovieNowPlaying();
             default:
                 return null;
         }

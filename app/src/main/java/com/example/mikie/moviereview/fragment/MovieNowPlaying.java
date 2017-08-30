@@ -19,6 +19,9 @@ import com.example.mikie.moviereview.api.ApiMovie;
 import com.example.mikie.moviereview.api.ApiRest;
 import com.example.mikie.moviereview.model.GenreDetail;
 import com.example.mikie.moviereview.model.ParentGenreDetail;
+import com.example.mikie.moviereview.presenter.GenreDetailPresenter;
+import com.example.mikie.moviereview.services.GenreService;
+import com.example.mikie.moviereview.services.impl.GenreServicesImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,7 @@ import rx.schedulers.Schedulers;
  * Created by IT01 on 8/29/2017.
  */
 
-public class MovieNowPlaying extends Fragment{
+public class MovieNowPlaying extends Fragment implements GenreDetailPresenter{
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
     private Context context;
@@ -44,6 +47,7 @@ public class MovieNowPlaying extends Fragment{
     private ProgressDialog dialog;
     private int page = 232;
     private String TAG = "Movie Now Playing - ";
+    private GenreService service;
 
     @Nullable
     @Override
@@ -59,7 +63,7 @@ public class MovieNowPlaying extends Fragment{
                     @Override
                     public void run() {
                         Log.d(TAG, page+"");
-                        loadMore(page);
+//                        loadMore(page);
                         page++;
                     }
                 });
@@ -68,7 +72,8 @@ public class MovieNowPlaying extends Fragment{
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         recyclerView.setAdapter(adapter);
-        load(1);
+        service = new GenreServicesImpl(this,getContext());
+        service.detailGenre("37");
         return view;
     }
 
@@ -78,16 +83,12 @@ public class MovieNowPlaying extends Fragment{
     }
 
     public void load(int page){
-        dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Loading");
-        dialog.show();
         Observable<ParentGenreDetail> observable = this.apiMovie.detailGenreMovie("37", this.context.getString(R.string.api_key), null, null, null, page+"");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ParentGenreDetail>() {
                     @Override
                     public void onCompleted() {
-                        dialog.dismiss();
                     }
 
                     @Override
@@ -136,4 +137,9 @@ public class MovieNowPlaying extends Fragment{
     }
 
 
+    @Override
+    public void print(ParentGenreDetail parentGenreDetail) {
+        detailList.addAll(parentGenreDetail.getResults());
+        adapter.notifyDataChanged();
+    }
 }
