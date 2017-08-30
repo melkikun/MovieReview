@@ -72,18 +72,20 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.nav_movie:
                 if(checkitem != 1) {
+                    checkitem = 1;
                     getSupportActionBar().setTitle("Movie");
                     fragment = new MovieFragment();
                 }
                 break;
             case R.id.nav_tv:
                 if(checkitem != 2){
+                    checkitem = 2;
                     getSupportActionBar().setTitle("TV Shows");
                     fragment = new TvFragment();
-                    checkitem = 2;
                 }
                 break;
         }
+        Toast.makeText(getApplicationContext(), checkitem+"", Toast.LENGTH_SHORT).show();
         if(fragment != null){
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, fragment);
