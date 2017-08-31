@@ -2,6 +2,7 @@ package com.example.mikie.moviereview.api;
 
 import com.example.mikie.moviereview.model.ListGenre;
 import com.example.mikie.moviereview.model.ParentGenreDetail;
+import com.example.mikie.moviereview.model.ParentMovie;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -26,12 +27,12 @@ public interface ApiMovie {
             @Query("page") String page
     );
 
-    @GET("movie/{jenis_tab}")
-    Observable<ParentGenreDetail> nowPlaying(
+    @GET("movie/{jenis}")
+    Observable<ParentMovie> movie(
             @Path("jenis") String jenis,
             @Query("api_key") String jenis_api,
             @Query("language") String jenis_language,
-            @Query("page") String jenis_page,
+            @Query("page") int jenis_page,
             @Query("region") String jenis_region
     );
 }

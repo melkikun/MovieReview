@@ -6,13 +6,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.adapter.ViewPagerAdapter;
+import com.example.mikie.moviereview.adapter.MoviePagerAdapter1;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,17 +31,25 @@ public class MovieFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.movie_layout, container, false);
         ButterKnife.bind(this, view);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
         tabLayout.addTab(tabLayout.newTab().setText("NOW PLAYING"));
         tabLayout.addTab(tabLayout.newTab().setText("TOP BOX OFFICE"));
         tabLayout.addTab(tabLayout.newTab().setText("UPCOMING"));
         tabLayout.addTab(tabLayout.newTab().setText("POPULAR"));
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
+        tabLayout.setTabTextColors(
+                ContextCompat.getColor(getContext(), R.color.cardview_light_background),
+                ContextCompat.getColor(getContext(), R.color.cardview_light_background)
+        );
+
+        MoviePagerAdapter1 adapter = new MoviePagerAdapter1(getFragmentManager(), tabLayout.getTabCount());
         pager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(pager);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                Log.d("page", tab.getPosition()+"");
                 pager.setCurrentItem(tab.getPosition());
+
             }
 
             @Override
@@ -54,15 +62,8 @@ public class MovieFragment extends Fragment{
 
             }
         });
-        tabLayout.setTabTextColors(
-                ContextCompat.getColor(getContext(), R.color.cardview_light_background),
-                ContextCompat.getColor(getContext(), R.color.cardview_light_background)
-        );
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
+
 }

@@ -1,4 +1,4 @@
-package com.example.mikie.moviereview.fragment;
+package com.example.mikie.moviereview.fragment.movie;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.adapter.GenreDetailRecycleVievAdapter;
+import com.example.mikie.moviereview.adapter.MovieAdapter1;
 import com.example.mikie.moviereview.api.ApiMovie;
 import com.example.mikie.moviereview.api.ApiRest;
 import com.example.mikie.moviereview.model.GenreDetail;
@@ -28,21 +28,17 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by IT01 on 8/29/2017.
  */
 
-public class MovieNowPlaying extends Fragment implements GenreDetailPresenter{
+public class MNowPlaying extends Fragment implements GenreDetailPresenter{
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
     private Context context;
     private List<GenreDetail> detailList = new ArrayList<>();
-    private GenreDetailRecycleVievAdapter adapter;
+    private MovieAdapter1 adapter;
     private ApiMovie apiMovie = ApiRest.retrofit().create(ApiMovie.class);
     private ProgressDialog dialog;
     private int page = 232;
@@ -56,8 +52,8 @@ public class MovieNowPlaying extends Fragment implements GenreDetailPresenter{
         ButterKnife.bind(this, view);
         this.context = getContext();
         service = new GenreServicesImpl(this,this.context);
-        adapter = new GenreDetailRecycleVievAdapter(context, detailList);
-        adapter.setLoadMoreListener(new GenreDetailRecycleVievAdapter.OnLoadMoreListener() {
+        adapter = new MovieAdapter1(context, detailList);
+        adapter.setLoadMoreListener(new MovieAdapter1.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 recyclerView.post(new Runnable() {
@@ -75,6 +71,7 @@ public class MovieNowPlaying extends Fragment implements GenreDetailPresenter{
         recyclerView.setAdapter(adapter);
 
         service.firstPage("37", 1);
+
         return view;
     }
 

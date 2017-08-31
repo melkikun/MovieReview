@@ -4,26 +4,19 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.adapter.GenreDetailRecycleVievAdapter;
+import com.example.mikie.moviereview.adapter.MovieAdapter1;
 import com.example.mikie.moviereview.api.ApiMovie;
 import com.example.mikie.moviereview.api.ApiRest;
-import com.example.mikie.moviereview.model.Genre;
 import com.example.mikie.moviereview.model.GenreDetail;
 import com.example.mikie.moviereview.model.ParentGenreDetail;
-import com.example.mikie.moviereview.presenter.GenreDetailPresenter;
-import com.example.mikie.moviereview.services.GenreService;
-import com.example.mikie.moviereview.services.impl.GenreServicesImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +35,7 @@ public class GenreDetailActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private ApiMovie api = ApiRest.retrofit().create(ApiMovie.class);
     private Context context = this;
-    private GenreDetailRecycleVievAdapter adapter;
+    private MovieAdapter1 adapter;
     private List<GenreDetail> list = new ArrayList<>();
     private int page = 45;
     private ProgressDialog dialog;
@@ -60,8 +53,8 @@ public class GenreDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(nama);
         this.context = this;
-        adapter = new GenreDetailRecycleVievAdapter(context, list);
-        adapter.setLoadMoreListener(new GenreDetailRecycleVievAdapter.OnLoadMoreListener() {
+        adapter = new MovieAdapter1(context, list);
+        adapter.setLoadMoreListener(new MovieAdapter1.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 recyclerView.post(new Runnable() {
