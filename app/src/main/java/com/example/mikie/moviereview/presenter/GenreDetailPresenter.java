@@ -8,4 +8,5 @@ import com.example.mikie.moviereview.model.ParentGenreDetail;
 
 public interface GenreDetailPresenter {
     public void print(ParentGenreDetail parentGenreDetail);
+    public void print2(ParentGenreDetail parentGenreDetail);
 }

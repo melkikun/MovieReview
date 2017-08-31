@@ -5,6 +5,5 @@ package com.example.mikie.moviereview.services;
  */
 
 public interface GenreService{
-    public void movie();
-    public void detailGenre(String id);
+    public void firstPage(String id, int page);
 }

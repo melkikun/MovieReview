@@ -55,6 +55,7 @@ public class MovieNowPlaying extends Fragment implements GenreDetailPresenter{
         View view = inflater.inflate(R.layout.movie_now_playing, container, false);
         ButterKnife.bind(this, view);
         this.context = getContext();
+        service = new GenreServicesImpl(this,this.context);
         adapter = new GenreDetailRecycleVievAdapter(context, detailList);
         adapter.setLoadMoreListener(new GenreDetailRecycleVievAdapter.OnLoadMoreListener() {
             @Override
@@ -63,7 +64,7 @@ public class MovieNowPlaying extends Fragment implements GenreDetailPresenter{
                     @Override
                     public void run() {
                         Log.d(TAG, page+"");
-//                        loadMore(page);
+                        service.firstPage("37", page);
                         page++;
                     }
                 });
@@ -72,8 +73,8 @@ public class MovieNowPlaying extends Fragment implements GenreDetailPresenter{
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         recyclerView.setAdapter(adapter);
-        service = new GenreServicesImpl(this,getContext());
-        service.detailGenre("37");
+
+        service.firstPage("37", 1);
         return view;
     }
 
@@ -82,64 +83,25 @@ public class MovieNowPlaying extends Fragment implements GenreDetailPresenter{
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void load(int page){
-        Observable<ParentGenreDetail> observable = this.apiMovie.detailGenreMovie("37", this.context.getString(R.string.api_key), null, null, null, page+"");
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ParentGenreDetail>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ParentGenreDetail parentGenreDetail) {
-                        detailList.addAll(parentGenreDetail.getResults());
-                        adapter.notifyDataChanged();
-                    }
-                });
-    }
-
-    public void loadMore(int page){
-        detailList.add(new GenreDetail(true));
-        adapter.notifyItemInserted(detailList.size());
-        Observable<ParentGenreDetail> observable = this.apiMovie.detailGenreMovie("37", this.context.getString(R.string.api_key), null, null, null, page+"");
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ParentGenreDetail>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ParentGenreDetail parentGenreDetail) {
-                        detailList.remove(detailList.size()-1);
-                        List<GenreDetail> detailList1 = parentGenreDetail.getResults();
-                        if(detailList1.size() > 0){
-                            detailList.addAll(detailList1);
-                        }else{
-                            adapter.setMoreDataAvailable(false);
-                            Toast.makeText(getContext().getApplicationContext(), "No More Data Available", Toast.LENGTH_SHORT).show();
-                        }
-                        adapter.notifyDataChanged();
-                    }
-                });
-    }
-
 
     @Override
     public void print(ParentGenreDetail parentGenreDetail) {
         detailList.addAll(parentGenreDetail.getResults());
+        adapter.notifyDataChanged();
+    }
+
+    @Override
+    public void print2(ParentGenreDetail parentGenreDetail) {
+        detailList.add(new GenreDetail(true));
+        adapter.notifyItemInserted(detailList.size());
+        detailList.remove(detailList.size()-1);
+        List<GenreDetail> list2 = parentGenreDetail.getResults();
+        if(detailList.size() > 0){
+            detailList.addAll(list2);
+        }else{
+            adapter.setMoreDataAvailable(false);
+            Toast.makeText(getContext().getApplicationContext(), "No More Data Available", Toast.LENGTH_SHORT).show();
+        }
         adapter.notifyDataChanged();
     }
 }
