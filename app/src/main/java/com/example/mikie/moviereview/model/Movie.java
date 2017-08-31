@@ -53,6 +53,10 @@ public class Movie {
     @Expose
     private String releaseDate;
 
+    public Movie(String title) {
+        this.title = title;
+    }
+
     public Double getVoteCount() {
         return voteCount;
     }

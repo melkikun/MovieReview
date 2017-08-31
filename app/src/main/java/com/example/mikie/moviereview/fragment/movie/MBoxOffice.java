@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.adapter.MovieAdapter;
@@ -41,7 +42,7 @@ public class MBoxOffice extends Fragment implements MoviePresenter{
     private String TAG = MBoxOffice.class.getSimpleName();
     private List<Movie> movieList = new ArrayList<>();
     private MovieAdapter adapter;
-
+    int page = 2;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,7 +57,9 @@ public class MBoxOffice extends Fragment implements MoviePresenter{
                 recyclerView.post(new Runnable() {
                     @Override
                     public void run() {
-
+                        service.loadMovie("now_playing", null, page, null);
+                        Log.d(TAG, page+"xdddd");
+                        page++;
                     }
                 });
             }
@@ -79,6 +82,16 @@ public class MBoxOffice extends Fragment implements MoviePresenter{
 
     @Override
     public void next(ParentMovie movie) {
-
+        movieList.add(new Movie("123"));
+        adapter.notifyItemInserted(movieList.size());
+        movieList.remove(movieList.size()-1);
+        List<Movie> movieList1 = movie.getResults();
+        if(movieList1.size()>0){
+            movieList.addAll(movieList1);
+        }else{
+            adapter.setMoreDataAvailable(false);
+            Toast.makeText(getContext(), "No More Data", Toast.LENGTH_LONG).show();
+        }
+        adapter.notifyDataChanged();
     }
 }
