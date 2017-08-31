@@ -107,7 +107,7 @@ public class MovieAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public interface OnLoadMoreListener {
-        public void onLoadMore();
+        void onLoadMore();
     }
 
     public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
