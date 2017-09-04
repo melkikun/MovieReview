@@ -15,11 +15,12 @@ import com.example.mikie.moviereview.fragment.movie.MUpcoming;
 
 public class MoviePagerAdapter extends FragmentStatePagerAdapter {
     int tabs;
+    private String[] tabTitles = new String[]{"NOW PLAYING", "POPULAR", "TOP RATED", "UPCOMMING"};
+
     public MoviePagerAdapter(FragmentManager fm, int tabs) {
         super(fm);
         this.tabs = tabs;
     }
-    private String[] tabTitles = new String[]{"NOW PLAYING", "POPULAR", "TOP RATED", "UPCOMMING"};
 
     @Override
     public CharSequence getPageTitle(int position) {

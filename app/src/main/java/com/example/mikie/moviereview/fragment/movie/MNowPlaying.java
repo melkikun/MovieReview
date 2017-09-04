@@ -2,6 +2,7 @@ package com.example.mikie.moviereview.fragment.movie;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
+import com.example.mikie.moviereview.activity.DetailMovie;
 import com.example.mikie.moviereview.adapter.MovieAdapter;
 import com.example.mikie.moviereview.api.ApiMovie;
 import com.example.mikie.moviereview.api.ApiRest;
@@ -68,7 +70,9 @@ public class MNowPlaying extends Fragment implements MoviePresenter {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), movieList.get(position).getTitle(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getContext(), DetailMovie.class);
+                intent.putExtra("id", movieList.get(position).getId());
+                startActivity(intent);
             }
         }));
         service = new MovieServiceImpl(this, getContext());
