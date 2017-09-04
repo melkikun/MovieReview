@@ -1,6 +1,7 @@
 package com.example.mikie.moviereview.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,7 +28,10 @@ public class DetailMovie extends AppCompatActivity {
     @BindView(R.id.view_pager)
     ViewPager pager;
     @BindView(R.id.toolbar_layout)
-    CollapsingToolbarLayout toolbarLayout;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.app_bar)
+    AppBarLayout appBarLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +40,32 @@ public class DetailMovie extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         Bundle bundle = getIntent().getExtras();
-        Integer id =  bundle.getInt("id");
+        Integer id = bundle.getInt("id");
 
         tabLayout.addTab(tabLayout.newTab().setText("TAB 1"));
         tabLayout.addTab(tabLayout.newTab().setText("TAB 2"));
         tabLayout.addTab(tabLayout.newTab().setText("TAB 3"));
+
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbarLayout.setTitle("Title xxxxx");
+                    isShow = true;
+                } else if (isShow) {
+                    collapsingToolbarLayout.setTitle("djkaghskjdgajkgdjsagdjasgfdjh");//carefull there should a space between double quote otherwise it wont work
+                    isShow = false;
+                }
+            }
+        });
 
         tabLayout.setTabTextColors(
                 ContextCompat.getColor(getApplicationContext(), R.color.cardview_light_background),
@@ -72,11 +96,11 @@ public class DetailMovie extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                default:
-                    break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
