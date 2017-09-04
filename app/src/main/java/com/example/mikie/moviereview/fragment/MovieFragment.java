@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.adapter.MoviePagerAdapter1;
+import com.example.mikie.moviereview.adapter.MoviePagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,15 +33,15 @@ public class MovieFragment extends Fragment{
         ButterKnife.bind(this, view);
 
         tabLayout.addTab(tabLayout.newTab().setText("NOW PLAYING"));
-        tabLayout.addTab(tabLayout.newTab().setText("TOP BOX OFFICE"));
-        tabLayout.addTab(tabLayout.newTab().setText("UPCOMING"));
         tabLayout.addTab(tabLayout.newTab().setText("POPULAR"));
+        tabLayout.addTab(tabLayout.newTab().setText("TOP RATED"));
+        tabLayout.addTab(tabLayout.newTab().setText("UPCOMMING"));
         tabLayout.setTabTextColors(
                 ContextCompat.getColor(getContext(), R.color.cardview_light_background),
                 ContextCompat.getColor(getContext(), R.color.cardview_light_background)
         );
 
-        MoviePagerAdapter1 adapter = new MoviePagerAdapter1(getFragmentManager(), tabLayout.getTabCount());
+        MoviePagerAdapter adapter = new MoviePagerAdapter(getFragmentManager(), tabLayout.getTabCount());
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

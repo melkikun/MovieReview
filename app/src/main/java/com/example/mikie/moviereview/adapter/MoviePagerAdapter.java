@@ -4,22 +4,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.mikie.moviereview.fragment.movie.MBoxOffice;
 import com.example.mikie.moviereview.fragment.movie.MNowPlaying;
 import com.example.mikie.moviereview.fragment.movie.MPopular;
+import com.example.mikie.moviereview.fragment.movie.MTopRated;
 import com.example.mikie.moviereview.fragment.movie.MUpcoming;
 
 /**
  * Created by IT01 on 8/29/2017.
  */
 
-public class MoviePagerAdapter1 extends FragmentStatePagerAdapter {
+public class MoviePagerAdapter extends FragmentStatePagerAdapter {
     int tabs;
-    public MoviePagerAdapter1(FragmentManager fm, int tabs) {
+    public MoviePagerAdapter(FragmentManager fm, int tabs) {
         super(fm);
         this.tabs = tabs;
     }
-    private String[] tabTitles = new String[]{"NOW PLAYING", "TOP BOX OFFICE", "UPCOMING", "POPULAR"};
+    private String[] tabTitles = new String[]{"NOW PLAYING", "POPULAR", "TOP RATED", "UPCOMMING"};
 
     @Override
     public CharSequence getPageTitle(int position) {
@@ -32,11 +32,11 @@ public class MoviePagerAdapter1 extends FragmentStatePagerAdapter {
             case 0:
                 return new MNowPlaying();
             case 1:
-                return new MBoxOffice();
-            case 2:
-                return new MUpcoming();
-            case 3:
                 return new MPopular();
+            case 2:
+                return new MTopRated();
+            case 3:
+                return new MUpcoming();
             default:
                 return null;
         }

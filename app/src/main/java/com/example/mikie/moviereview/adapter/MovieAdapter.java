@@ -57,7 +57,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position > getItemCount() - 1 && !isLoading && isMoreDataAvailable && onLoadMoreListener != null) {
+        if (position >= getItemCount() - 1 && !isLoading && isMoreDataAvailable && onLoadMoreListener != null) {
             isLoading = true;
             onLoadMoreListener.onLoadMore();
         }

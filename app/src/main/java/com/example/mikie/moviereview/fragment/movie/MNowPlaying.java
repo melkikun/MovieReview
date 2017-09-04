@@ -5,23 +5,24 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.adapter.MovieAdapter1;
+import com.example.mikie.moviereview.adapter.MovieAdapter;
 import com.example.mikie.moviereview.api.ApiMovie;
 import com.example.mikie.moviereview.api.ApiRest;
-import com.example.mikie.moviereview.model.GenreDetail;
-import com.example.mikie.moviereview.model.ParentGenreDetail;
-import com.example.mikie.moviereview.presenter.GenreDetailPresenter;
-import com.example.mikie.moviereview.services.GenreService;
-import com.example.mikie.moviereview.services.impl.GenreServicesImpl;
+import com.example.mikie.moviereview.custom.RecyclerItemClickListener;
+import com.example.mikie.moviereview.model.Movie;
+import com.example.mikie.moviereview.model.ParentMovie;
+import com.example.mikie.moviereview.presenter.MoviePresenter;
+import com.example.mikie.moviereview.services.MovieService;
+import com.example.mikie.moviereview.services.impl.MovieServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,72 +34,73 @@ import butterknife.ButterKnife;
  * Created by IT01 on 8/29/2017.
  */
 
-public class MNowPlaying extends Fragment implements GenreDetailPresenter{
+public class MNowPlaying extends Fragment implements MoviePresenter {
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
-    private Context context;
-    private List<GenreDetail> detailList = new ArrayList<>();
-    private MovieAdapter1 adapter;
-    private ApiMovie apiMovie = ApiRest.retrofit().create(ApiMovie.class);
-    private ProgressDialog dialog;
-    private int page = 232;
-    private String TAG = "Movie Now Playing - ";
-    private GenreService service;
+    private List<Movie> movieList = new ArrayList<>();
+    private MovieAdapter adapter;
+    private int page = 2;
+    private String TAG = this.getClass().getSimpleName();
+    private MovieService service;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_now_playing, container, false);
         ButterKnife.bind(this, view);
-        this.context = getContext();
-        service = new GenreServicesImpl(this,this.context);
-        adapter = new MovieAdapter1(context, detailList);
-        adapter.setLoadMoreListener(new MovieAdapter1.OnLoadMoreListener() {
+        adapter = new MovieAdapter(movieList, getContext());
+        adapter.setOnLoadMoreListener(new MovieAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 recyclerView.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d(TAG, page+"");
-                        service.firstPage("37", page);
+                        service.loadMovie("now_playing", null, page, null);
                         page++;
                     }
                 });
             }
         });
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+        recyclerView.hasFixedSize();
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-        service.firstPage("37", 1);
-
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(getContext(), movieList.get(position).getTitle(), Toast.LENGTH_LONG).show();
+            }
+        }));
+        service = new MovieServiceImpl(this, getContext());
+        service.loadMovie("now_playing", null, 1, null);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-
-    @Override
-    public void print(ParentGenreDetail parentGenreDetail) {
-        detailList.addAll(parentGenreDetail.getResults());
-        adapter.notifyDataChanged();
+    public void first(ParentMovie movie) {
+        if (movie.getResults().size() != 0) {
+            movieList.addAll(movie.getResults());
+            adapter.notifyDataChanged();
+        }
     }
 
     @Override
-    public void print2(ParentGenreDetail parentGenreDetail) {
-        detailList.add(new GenreDetail(true));
-        adapter.notifyItemInserted(detailList.size());
-        detailList.remove(detailList.size()-1);
-        List<GenreDetail> list2 = parentGenreDetail.getResults();
-        if(detailList.size() > 0){
-            detailList.addAll(list2);
+    public void next(ParentMovie movie) {
+        //add loading progress bar
+        movieList.add(new Movie(""));
+        adapter.notifyItemInserted(movieList.size() - 1);
+        //remove loading bar
+        movieList.remove(movieList.size()-1);
+
+        //tampung hasil ke dua
+        List<Movie> movieList1 = movie.getResults();
+        if (movieList1.size()!=0){
+            this.movieList.addAll(movieList1);
         }else{
             adapter.setMoreDataAvailable(false);
-            Toast.makeText(getContext().getApplicationContext(), "No More Data Available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Tidak ada data lagi", Toast.LENGTH_SHORT).show();
         }
+
         adapter.notifyDataChanged();
     }
 }
