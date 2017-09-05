@@ -7,6 +7,12 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.mikie.moviereview.activity.DetailMovie">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v4.view.ViewPager>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -21,18 +27,134 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false"
-            >
+            app:titleEnabled="false">
 
-            <ImageView
-                android:id="@+id/expandedImage"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="256dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/google"
-                app:layout_collapseMode="parallax"
-                android:fitsSystemWindows="true"
-                />
+                android:layout_height="450dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.6">
+
+                        <com.synnapps.carouselview.CarouselView
+                            android:id="@+id/carouselView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fitsSystemWindows="true"
+                            app:fillColor="#FFFFFFFF"
+                            app:layout_collapseMode="parallax"
+                            app:pageColor="#00000000"
+                            app:radius="6dp"
+                            app:strokeColor="#FF777777"
+                            app:strokeWidth="1dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.4"
+                        android:background="#284850">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="150dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:layout_marginTop="25dp"
+                                >
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="0.2">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:layout_gravity="center_vertical|center"
+                                        >
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent">
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="RXX"
+                                                android:id="@+id/type1"
+                                                android:padding="2dp"
+                                                android:background="@drawable/persegi"
+                                                />
+                                            <TextView
+                                                android:layout_marginLeft="5dp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="2017"
+                                                android:id="@+id/type2"
+                                                android:padding="2dp"
+                                                android:layout_toRightOf="@+id/type1"
+                                                />
+                                            <TextView
+                                                android:layout_marginLeft="5dp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="1 hour 10 mins"
+                                                android:padding="2dp"
+                                                android:id="@+id/type3"
+                                                android:layout_toRightOf="@+id/type2"
+                                                />
+                                        </RelativeLayout>
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="0.8"
+                                    android:orientation="vertical">
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Annabelle: Creation"
+                                        android:textSize="22sp"
+                                        android:textStyle="bold"
+                                        />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Thriller, Horror"
+                                        android:textSize="15sp"
+                                        android:layout_marginTop="10dp"
+                                        />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="115dp"
+                    android:layout_height="170dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="115dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/no_image" />
+            </FrameLayout>
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -41,23 +163,17 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
+
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="#6890A0"
             app:layout_anchorGravity="bottom"
             app:tabGravity="fill"
-            app:tabMode="fixed"
-            >
-        </android.support.design.widget.TabLayout>
+            app:tabIndicatorColor="#779BA9"
+            app:tabMode="fixed"></android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
-    <android.support.v4.view.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/view_pager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        ></android.support.v4.view.ViewPager>
     <!--<include layout="@layout/content_detail_movie" />-->
 
 </android.support.design.widget.CoordinatorLayout>

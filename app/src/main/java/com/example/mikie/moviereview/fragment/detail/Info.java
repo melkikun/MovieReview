@@ -33,7 +33,7 @@ public class Info extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.info_detail_movie, container, false);
         ButterKnife.bind(this, view);
-        for (int i=0; i < 1000; i++){
+        for (int i=0; i < 25; i++){
             list.add(i+"");
         }
         adapter = new TestingAdapter(list, getContext());

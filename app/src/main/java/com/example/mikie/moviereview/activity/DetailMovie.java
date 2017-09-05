@@ -1,5 +1,6 @@
 package com.example.mikie.moviereview.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,12 +11,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.adapter.DetailMoviePagerAdapter;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +37,10 @@ public class DetailMovie extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
+    @BindView(R.id.carouselView)
+    CarouselView carouselView;
+    private String TAG =  getClass().getSimpleName();
+    private int [] img = {R.drawable.alarm, R.drawable.contact, R.drawable.google};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,32 +50,28 @@ public class DetailMovie extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         Bundle bundle = getIntent().getExtras();
         Integer id = bundle.getInt("id");
+
+        carouselView.setPageCount(img.length);
+        carouselView.setImageListener(new ImageListener() {
+            @Override
+            public void setImageForPosition(int position, ImageView imageView) {
+                imageView.setImageResource(img[position]);
+            }
+        });
+
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                Log.d(TAG, "scroll");
+            }
+        });
 
         tabLayout.addTab(tabLayout.newTab().setText("TAB 1"));
         tabLayout.addTab(tabLayout.newTab().setText("TAB 2"));
         tabLayout.addTab(tabLayout.newTab().setText("TAB 3"));
-
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = false;
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle("Title xxxxx");
-                    isShow = true;
-                } else if (isShow) {
-                    collapsingToolbarLayout.setTitle("djkaghskjdgajkgdjsagdjasgfdjh");//carefull there should a space between double quote otherwise it wont work
-                    isShow = false;
-                }
-            }
-        });
 
         tabLayout.setTabTextColors(
                 ContextCompat.getColor(getApplicationContext(), R.color.cardview_light_background),
@@ -91,6 +97,7 @@ public class DetailMovie extends AppCompatActivity {
 
             }
         });
+
 
     }
 
