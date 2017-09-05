@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.adapter.DetailMoviePagerAdapter;
 import com.synnapps.carouselview.CarouselView;
@@ -37,8 +39,10 @@ public class DetailMovie extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
-    @BindView(R.id.carouselView)
-    CarouselView carouselView;
+//    @BindView(R.id.carouselView)
+//    CarouselView carouselView;
+    @BindView(R.id.slider)
+    SliderLayout sliderLayout;
     private String TAG =  getClass().getSimpleName();
     private int [] img = {R.drawable.alarm, R.drawable.contact, R.drawable.google};
 
@@ -53,21 +57,21 @@ public class DetailMovie extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         Bundle bundle = getIntent().getExtras();
         Integer id = bundle.getInt("id");
+        TextSliderView textSliderView = new TextSliderView(this);
+        for(int i = 0; i < 5; i ++)
+        textSliderView
+                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
 
-        carouselView.setPageCount(img.length);
-        carouselView.setImageListener(new ImageListener() {
-            @Override
-            public void setImageForPosition(int position, ImageView imageView) {
-                imageView.setImageResource(img[position]);
-            }
-        });
 
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                Log.d(TAG, "scroll");
-            }
-        });
+        sliderLayout.addSlider(textSliderView);
+
+//        carouselView.setPageCount(img.length);
+//        carouselView.setImageListener(new ImageListener() {
+//            @Override
+//            public void setImageForPosition(int position, ImageView imageView) {
+//                imageView.setImageResource(img[position]);
+//            }
+//        });
 
         tabLayout.addTab(tabLayout.newTab().setText("TAB 1"));
         tabLayout.addTab(tabLayout.newTab().setText("TAB 2"));
@@ -110,5 +114,11 @@ public class DetailMovie extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStop() {
+        sliderLayout.startAutoCycle();
+        super.onStop();
     }
 }
