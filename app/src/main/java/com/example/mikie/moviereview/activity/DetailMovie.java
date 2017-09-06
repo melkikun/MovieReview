@@ -76,8 +76,10 @@ public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnS
         tabLayout.addTab(tabLayout.newTab().setText("INFO"));
         tabLayout.addTab(tabLayout.newTab().setText("CAST"));
         tabLayout.addTab(tabLayout.newTab().setText("REVIEWS"));
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("data", id+"");
 
-        DetailMoviePagerAdapter adapter = new DetailMoviePagerAdapter(tabLayout.getTabCount(), getSupportFragmentManager());
+        DetailMoviePagerAdapter adapter = new DetailMoviePagerAdapter(tabLayout.getTabCount(), getSupportFragmentManager(), bundle1);
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
