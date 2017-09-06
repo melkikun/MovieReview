@@ -1,6 +1,7 @@
 package com.example.mikie.moviereview.api;
 
 import com.example.mikie.moviereview.model.ListGenre;
+import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.model.ParentGenreDetail;
 import com.example.mikie.moviereview.model.ParentMovie;
 
@@ -34,5 +35,11 @@ public interface ApiMovie {
             @Query("language") String jenis_language,
             @Query("page") int jenis_page,
             @Query("region") String jenis_region
+    );
+
+    @GET("movie/{id}/credits")
+    Observable<ParentCastingCrew> getCasting(
+        @Path("id") String id,
+        @Query("api_key") String api_key
     );
 }

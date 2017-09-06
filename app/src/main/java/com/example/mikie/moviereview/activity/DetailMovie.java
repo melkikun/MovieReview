@@ -1,34 +1,36 @@
 package com.example.mikie.moviereview.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.example.mikie.moviereview.MainActivity;
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.adapter.DetailMoviePagerAdapter;
-import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
+import com.example.mikie.moviereview.fragment.detailmovie.Casting;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailMovie extends AppCompatActivity {
+public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tab_layout)
@@ -39,12 +41,10 @@ public class DetailMovie extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
-//    @BindView(R.id.carouselView)
-//    CarouselView carouselView;
     @BindView(R.id.slider)
     SliderLayout sliderLayout;
     private String TAG =  getClass().getSimpleName();
-    private int [] img = {R.drawable.alarm, R.drawable.contact, R.drawable.google};
+    private HashMap<String, String> hashMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,33 +54,28 @@ public class DetailMovie extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
         Bundle bundle = getIntent().getExtras();
         Integer id = bundle.getInt("id");
-        TextSliderView textSliderView = new TextSliderView(this);
-        for(int i = 0; i < 5; i ++)
-        textSliderView
-                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+        collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
+        collapsingToolbarLayout.setTitle(id+"");
+        hashMap.put("Android CupCake", "http://androidblog.esy.es/images/cupcake-1.png");
+        hashMap.put("Android Donut", "http://androidblog.esy.es/images/donut-2.png");
+        hashMap.put("Android Eclair", "http://androidblog.esy.es/images/eclair-3.png");
+        hashMap.put("Android Froyo", "http://androidblog.esy.es/images/froyo-4.png");
+        hashMap.put("Android GingerBread", "http://androidblog.esy.es/images/gingerbread-5.png");
 
+        for (String name : hashMap.keySet()){
+            DefaultSliderView textSliderView = new DefaultSliderView(this);
+            textSliderView
+                    .image(hashMap.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.CenterCrop)
+                    .setOnSliderClickListener(this);
+            sliderLayout.addSlider(textSliderView);
+        }
 
-        sliderLayout.addSlider(textSliderView);
-
-//        carouselView.setPageCount(img.length);
-//        carouselView.setImageListener(new ImageListener() {
-//            @Override
-//            public void setImageForPosition(int position, ImageView imageView) {
-//                imageView.setImageResource(img[position]);
-//            }
-//        });
-
-        tabLayout.addTab(tabLayout.newTab().setText("TAB 1"));
-        tabLayout.addTab(tabLayout.newTab().setText("TAB 2"));
-        tabLayout.addTab(tabLayout.newTab().setText("TAB 3"));
-
-        tabLayout.setTabTextColors(
-                ContextCompat.getColor(getApplicationContext(), R.color.cardview_light_background),
-                ContextCompat.getColor(getApplicationContext(), R.color.cardview_light_background)
-        );
+        tabLayout.addTab(tabLayout.newTab().setText("INFO"));
+        tabLayout.addTab(tabLayout.newTab().setText("CAST"));
+        tabLayout.addTab(tabLayout.newTab().setText("REVIEWS"));
 
         DetailMoviePagerAdapter adapter = new DetailMoviePagerAdapter(tabLayout.getTabCount(), getSupportFragmentManager());
         pager.setAdapter(adapter);
@@ -101,8 +96,6 @@ public class DetailMovie extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     @Override
@@ -110,6 +103,10 @@ public class DetailMovie extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+            case R.id.m_home:
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            case R.id.m_share:
+                Toast.makeText(getApplicationContext(), "share", Toast.LENGTH_LONG).show();
             default:
                 break;
         }
@@ -117,8 +114,35 @@ public class DetailMovie extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater  menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_detail_movie, menu);
+        return true;
+    }
+
+    @Override
     protected void onStop() {
-        sliderLayout.startAutoCycle();
+        sliderLayout.stopAutoCycle();
         super.onStop();
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

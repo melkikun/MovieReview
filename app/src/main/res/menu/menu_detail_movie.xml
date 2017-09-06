@@ -3,8 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.mikie.moviereview.activity.DetailMovie">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:id="@+id/m_home"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:icon="@drawable/home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/m_share"
+        android:title="share"
+        android:icon="@drawable/share"
+        app:showAsAction="always"
+        />
+    <group android:checkableBehavior="none"
+        android:id="@+id/menu3">
+        <item
+            android:id="@+id/setting1"
+            android:title="Google Play Store" />
+        <item
+            android:id="@+id/setting2"
+            android:title="View On Tmdb" />
+        <item
+            android:id="@+id/setting3"
+            android:title="View On Imdb" />
+        <item
+            android:id="@+id/setting4"
+            android:title="Join The Discusion" />
+    </group>
 </menu>

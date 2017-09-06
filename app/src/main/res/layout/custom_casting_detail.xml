@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:layout_marginLeft="20dp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    >
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:src="@drawable/google"
+                        android:id="@+id/casting_img"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp"
+                        android:text="Miko Hendro Cahyono"
+                        android:layout_toRightOf="@+id/casting_img"
+                        android:textAlignment="textStart"
+                        android:gravity="center_vertical"
+                        android:id="@+id/casting_name"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="0.3"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginRight="20dp"
+                >
+                <TextView
+                    android:id="@+id/casting_job"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pemeraan Utama"
+                    android:textAlignment="textEnd"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

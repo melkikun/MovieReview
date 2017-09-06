@@ -5,5 +5,6 @@ package com.example.mikie.moviereview.services;
  */
 
 public interface MovieService {
-    public void loadMovie(String jenis_, String language_, int page_, String region_);
+    void loadMovie(String jenis_, String language_, int page_, String region_);
+    void movieCasting(String id);
 }

@@ -1,10 +1,13 @@
 package com.example.mikie.moviereview.adapter;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.mikie.moviereview.fragment.detail.Info;
+import com.example.mikie.moviereview.fragment.detailmovie.Casting;
+import com.example.mikie.moviereview.fragment.detailmovie.Info;
+import com.example.mikie.moviereview.fragment.detailmovie.Review;
 
 /**
  * Created by IT01 on 9/4/2017.
@@ -12,7 +15,7 @@ import com.example.mikie.moviereview.fragment.detail.Info;
 
 public class DetailMoviePagerAdapter extends FragmentStatePagerAdapter{
     int tabs;
-    private String [] title = new String[]{"tab 1", "tab 2", "tab 3"};
+    private String [] title = new String[]{"INFO", "CAST", "REVIEW"};
     public DetailMoviePagerAdapter(int tabs, FragmentManager fm) {
         super(fm);
         this.tabs = tabs;
@@ -25,16 +28,22 @@ public class DetailMoviePagerAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
+        Fragment fragment = null;
+
         switch (position){
             case 0:
-                return new Info();
+                fragment = new Info();
+                break;
             case 1:
-                return new Info();
+                fragment = new Casting();
+                break;
             case 2:
-                return new Info();
+                fragment = new Review();
+                break;
             default:
                 return null;
         }
+        return fragment;
     }
 
     @Override

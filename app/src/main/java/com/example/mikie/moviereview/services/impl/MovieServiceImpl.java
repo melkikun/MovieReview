@@ -6,7 +6,9 @@ import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.api.ApiMovie;
 import com.example.mikie.moviereview.api.ApiRest;
 import com.example.mikie.moviereview.model.Movie;
+import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.model.ParentMovie;
+import com.example.mikie.moviereview.presenter.CastingPresenter;
 import com.example.mikie.moviereview.presenter.MoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
 
@@ -22,10 +24,16 @@ import rx.schedulers.Schedulers;
 public class MovieServiceImpl implements MovieService{
     private ApiMovie api = ApiRest.retrofit().create(ApiMovie.class);
     private MoviePresenter presenter;
+    private CastingPresenter castingPresenter;
     private Context context;
 
     public MovieServiceImpl(MoviePresenter presenter, Context context) {
         this.presenter = presenter;
+        this.context = context;
+    }
+
+    public MovieServiceImpl(CastingPresenter castingPresenter, Context context) {
+        this.castingPresenter = castingPresenter;
         this.context = context;
     }
 
@@ -55,5 +63,28 @@ public class MovieServiceImpl implements MovieService{
                     }
                 });
 
+    }
+
+    @Override
+    public void movieCasting(String id) {
+        Observable<ParentCastingCrew> observable = api.getCasting(id, context.getString(R.string.api_key));
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ParentCastingCrew>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ParentCastingCrew parentCastingCrew) {
+                        castingPresenter.load(parentCastingCrew);
+                    }
+                });
     }
 }
