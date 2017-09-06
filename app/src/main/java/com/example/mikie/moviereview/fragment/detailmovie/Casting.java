@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.adapter.CastingAdapter;
+import com.example.mikie.moviereview.custom.DividerItemDecoration;
 import com.example.mikie.moviereview.model.Cast;
 import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.presenter.CastingPresenter;
@@ -53,5 +54,6 @@ public class Casting extends Fragment implements CastingPresenter{
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(castingAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
     }
 }
