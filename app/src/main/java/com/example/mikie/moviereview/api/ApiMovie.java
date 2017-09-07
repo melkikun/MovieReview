@@ -6,6 +6,7 @@ import com.example.mikie.moviereview.model.ParentBackdropPoster;
 import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.model.ParentGenreDetail;
 import com.example.mikie.moviereview.model.ParentMovie;
+import com.example.mikie.moviereview.model.ParentReview;
 import com.example.mikie.moviereview.model.Poster;
 
 import retrofit2.http.GET;
@@ -49,6 +50,14 @@ public interface ApiMovie {
             @Query("api_key") String api,
             @Query("language") String language,
             @Query("include_image_language") String iil
+    );
+
+    @GET("/movie/{id}/reviews")
+    Observable<ParentReview> getReview(
+            @Path("id") String id,
+            @Query("api_key") String api,
+            @Query("language") String language,
+            @Query("page") int iil
     );
 
 

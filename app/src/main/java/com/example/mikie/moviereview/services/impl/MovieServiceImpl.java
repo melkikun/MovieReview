@@ -15,11 +15,13 @@ import com.example.mikie.moviereview.model.Movie;
 import com.example.mikie.moviereview.model.ParentBackdropPoster;
 import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.model.ParentMovie;
+import com.example.mikie.moviereview.model.ParentReview;
 import com.example.mikie.moviereview.model.Poster;
 import com.example.mikie.moviereview.presenter.CastingPresenter;
 import com.example.mikie.moviereview.presenter.DetailMoviePresenter;
 import com.example.mikie.moviereview.presenter.MoviePresenter;
 import com.example.mikie.moviereview.presenter.PosterPresenter;
+import com.example.mikie.moviereview.presenter.ReviewPresenter;
 import com.example.mikie.moviereview.services.MovieService;
 
 import rx.Observable;
@@ -38,6 +40,7 @@ public class MovieServiceImpl implements MovieService{
     private CastingPresenter castingPresenter;
     private DetailMoviePresenter detailMoviePresenter;
     private PosterPresenter posterPresenter;
+    private ReviewPresenter reviewPresenter;
     private ProgressDialog dialog;
 
     public MovieServiceImpl(MoviePresenter moviePresenter, Context context) {
@@ -60,7 +63,10 @@ public class MovieServiceImpl implements MovieService{
         this.context = context;
     }
 
-
+    public MovieServiceImpl(Context context, ReviewPresenter reviewPresenter) {
+        this.context = context;
+        this.reviewPresenter = reviewPresenter;
+    }
 
     @Override
     public void loadMovie(String jenis_, String language_, final int page_, String region_) {
@@ -164,5 +170,28 @@ public class MovieServiceImpl implements MovieService{
                        posterPresenter.loadPoster(parentBackdropPoster);
                    }
                });
+    }
+
+    @Override
+    public void reviewMovie(String id, String language, int page) {
+        Observable<ParentReview> observable = api.getReview(id, this.context.getString(R.string.api_key), language, page);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ParentReview>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("error", e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ParentReview parentReview) {
+                        reviewPresenter.loadReview(parentReview);
+                    }
+                });
     }
 }

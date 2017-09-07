@@ -98,10 +98,6 @@ public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnS
         service2 = new MovieServiceImpl((PosterPresenter) this, getApplicationContext());
         service2.posterMovie(id + "", "en", "en");
 
-        //menu collapsing toolbar layoout
-        collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
-        collapsingToolbarLayout.setTitle(id + "");
-
         tabLayout.addTab(tabLayout.newTab().setText("INFO"));
         tabLayout.addTab(tabLayout.newTab().setText("CAST"));
         tabLayout.addTab(tabLayout.newTab().setText("REVIEWS"));
@@ -197,7 +193,6 @@ public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnS
         type3.setText(hours + " hr " + minutes + " mins ");
         genre.setText(genre_);
         judul.setText(movie.getOriginalTitle());
-        getSupportActionBar().setTitle(movie.getOriginalTitle());
         Glide.with(this).load(IMG + movie.getPosterPath()).diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().into(logo);
 
         type1.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +201,9 @@ public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnS
                 startActivity(new Intent(getApplicationContext(), TestingXX.class));
             }
         });
+        //menu collapsing toolbar layoout
+        collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
+        collapsingToolbarLayout.setTitle(movie.getOriginalTitle()+"");
     }
 
     @Override
