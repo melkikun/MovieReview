@@ -42,4 +42,7 @@ public interface ApiMovie {
         @Path("id") String id,
         @Query("api_key") String api_key
     );
+
+    @GET("movie/{id}")
+    Observable test();
 }
