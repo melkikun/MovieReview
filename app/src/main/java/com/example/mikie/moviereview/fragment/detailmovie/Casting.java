@@ -42,7 +42,6 @@ public class Casting extends Fragment implements CastingPresenter{
         View view = inflater.inflate(R.layout.casting_detail, container, false);
         ButterKnife.bind(this, view);
         Bundle args = getArguments();
-        Log.d(TAG, args+"");
         service = new MovieServiceImpl(this, getContext());
         service.castingMovie(args.getString("data"));
         return view;

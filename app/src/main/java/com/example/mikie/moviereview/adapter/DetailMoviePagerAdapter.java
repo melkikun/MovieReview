@@ -46,6 +46,7 @@ public class DetailMoviePagerAdapter extends FragmentStatePagerAdapter{
                 break;
             case 2:
                 fragment = new Review();
+                fragment.setArguments(this.bundle);
                 break;
             default:
                 return null;

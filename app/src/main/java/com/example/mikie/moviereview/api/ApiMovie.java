@@ -52,12 +52,12 @@ public interface ApiMovie {
             @Query("include_image_language") String iil
     );
 
-    @GET("/movie/{id}/reviews")
+    @GET("movie/{id}/reviews")
     Observable<ParentReview> getReview(
             @Path("id") String id,
             @Query("api_key") String api,
             @Query("language") String language,
-            @Query("page") int iil
+            @Query("page") String iil
     );
 
 

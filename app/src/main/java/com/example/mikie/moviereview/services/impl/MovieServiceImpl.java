@@ -63,9 +63,9 @@ public class MovieServiceImpl implements MovieService{
         this.context = context;
     }
 
-    public MovieServiceImpl(Context context, ReviewPresenter reviewPresenter) {
-        this.context = context;
+    public MovieServiceImpl(ReviewPresenter reviewPresenter, Context context) {
         this.reviewPresenter = reviewPresenter;
+        this.context = context;
     }
 
     @Override
@@ -173,7 +173,7 @@ public class MovieServiceImpl implements MovieService{
     }
 
     @Override
-    public void reviewMovie(String id, String language, int page) {
+    public void reviewMovie(String id, String language, String page) {
         Observable<ParentReview> observable = api.getReview(id, this.context.getString(R.string.api_key), language, page);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

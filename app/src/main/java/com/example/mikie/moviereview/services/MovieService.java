@@ -9,5 +9,5 @@ public interface MovieService {
     void castingMovie(String id);
     void detailMovie(String id);
     void posterMovie(String id, String language, String iil);
-    void reviewMovie(String id, String language, int page);
+    void reviewMovie(String id, String language, String page);
 }
