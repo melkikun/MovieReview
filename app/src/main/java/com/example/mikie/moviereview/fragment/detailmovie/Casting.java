@@ -44,7 +44,7 @@ public class Casting extends Fragment implements CastingPresenter{
         Bundle args = getArguments();
         Log.d(TAG, args+"");
         service = new MovieServiceImpl(this, getContext());
-        service.movieCasting(args.getString("data"));
+        service.castingMovie(args.getString("data"));
         return view;
     }
 

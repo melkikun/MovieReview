@@ -1,6 +1,5 @@
 package com.example.mikie.moviereview.presenter;
 
-import com.example.mikie.moviereview.model.Movie;
 import com.example.mikie.moviereview.model.ParentMovie;
 
 /**
@@ -8,6 +7,8 @@ import com.example.mikie.moviereview.model.ParentMovie;
  */
 
 public interface MoviePresenter {
-    public void first(ParentMovie movie);
-    public void next(ParentMovie movie);
+    void first(ParentMovie movie);
+    void next(ParentMovie movie);
+    void startLoading();
+    void stopLoading();
 }

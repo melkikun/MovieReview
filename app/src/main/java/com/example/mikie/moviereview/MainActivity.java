@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         //change icon navigation view
         toolbar.setNavigationIcon(R.drawable.menu);
         //rename title toolbar
-        getSupportActionBar().setTitle("Movie");
+        getSupportActionBar().setTitle("GenreMovie");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFFFF"));
 
         //navigation view on click
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_movie:
                 if(checkitem != 1) {
                     checkitem = 1;
-                    getSupportActionBar().setTitle("Movie");
+                    getSupportActionBar().setTitle("GenreMovie");
                     fragment = new MovieFragment();
                 }
                 break;

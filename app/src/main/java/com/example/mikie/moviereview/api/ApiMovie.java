@@ -1,9 +1,12 @@
 package com.example.mikie.moviereview.api;
 
 import com.example.mikie.moviereview.model.ListGenre;
+import com.example.mikie.moviereview.model.Movie;
+import com.example.mikie.moviereview.model.ParentBackdropPoster;
 import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.model.ParentGenreDetail;
 import com.example.mikie.moviereview.model.ParentMovie;
+import com.example.mikie.moviereview.model.Poster;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -15,21 +18,9 @@ import rx.Observable;
  */
 
 public interface ApiMovie {
-    @GET("genre/movie/list")
-    Observable<ListGenre> test(@Query("api_key") String api, @Query("language") String language);
-
-    @GET("genre/{id}/movies")
-    Observable<ParentGenreDetail> detailGenreMovie(
-            @Path("id") String id,
-            @Query("api_key") String api,
-            @Query("language") String language,
-            @Query("include_adult") String adult,
-            @Query("sort_by") String sort,
-            @Query("page") String page
-    );
 
     @GET("movie/{jenis}")
-    Observable<ParentMovie> movie(
+    Observable<ParentMovie> getMovie(
             @Path("jenis") String jenis,
             @Query("api_key") String jenis_api,
             @Query("language") String jenis_language,
@@ -44,7 +35,21 @@ public interface ApiMovie {
     );
 
     @GET("movie/{id}")
-    Observable test(
-            @Path("id") String id
+    Observable <Movie> getDetailMovie(
+            @Path("id") String id,
+            @Query("api_key") String api,
+            @Query("language") String language,
+            @Query("append_to_response") String append
+
     );
+
+    @GET("movie/{id}/images")
+    Observable<ParentBackdropPoster> getPosterMovie(
+            @Path("id") String id,
+            @Query("api_key") String api,
+            @Query("language") String language,
+            @Query("include_image_language") String iil
+    );
+
+
 }

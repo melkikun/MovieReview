@@ -1,7 +1,6 @@
 package com.example.mikie.moviereview.fragment.movie;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,10 +16,8 @@ import android.widget.Toast;
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.activity.DetailMovie;
 import com.example.mikie.moviereview.adapter.MovieAdapter;
-import com.example.mikie.moviereview.api.ApiMovie;
-import com.example.mikie.moviereview.api.ApiRest;
 import com.example.mikie.moviereview.custom.RecyclerItemClickListener;
-import com.example.mikie.moviereview.model.Movie;
+import com.example.mikie.moviereview.model.GenreMovie;
 import com.example.mikie.moviereview.model.ParentMovie;
 import com.example.mikie.moviereview.presenter.MoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
@@ -39,18 +36,21 @@ import butterknife.ButterKnife;
 public class MNowPlaying extends Fragment implements MoviePresenter {
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
-    private List<Movie> movieList = new ArrayList<>();
+    private List<GenreMovie> genreMovieList = new ArrayList<>();
     private MovieAdapter adapter;
     private int page = 2;
     private String TAG = this.getClass().getSimpleName();
     private MovieService service;
+    private ProgressDialog dialog;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_now_playing, container, false);
         ButterKnife.bind(this, view);
-        adapter = new MovieAdapter(movieList, getContext());
+
+        adapter = new MovieAdapter(genreMovieList, getContext());
         adapter.setOnLoadMoreListener(new MovieAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -71,19 +71,25 @@ public class MNowPlaying extends Fragment implements MoviePresenter {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getContext(), DetailMovie.class);
-                intent.putExtra("id", movieList.get(position).getId());
+                intent.putExtra("id", genreMovieList.get(position).getId());
                 startActivity(intent);
             }
         }));
         service = new MovieServiceImpl(this, getContext());
         service.loadMovie("now_playing", null, 1, null);
+//        dialog = new ProgressDialog(getActivity());
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void first(ParentMovie movie) {
         if (movie.getResults().size() != 0) {
-            movieList.addAll(movie.getResults());
+            genreMovieList.addAll(movie.getResults());
             adapter.notifyDataChanged();
         }
     }
@@ -91,20 +97,31 @@ public class MNowPlaying extends Fragment implements MoviePresenter {
     @Override
     public void next(ParentMovie movie) {
         //add loading progress bar
-        movieList.add(new Movie(""));
-        adapter.notifyItemInserted(movieList.size() - 1);
+        genreMovieList.add(new GenreMovie(""));
+        adapter.notifyItemInserted(genreMovieList.size() - 1);
         //remove loading bar
-        movieList.remove(movieList.size()-1);
+        genreMovieList.remove(genreMovieList.size() - 1);
 
         //tampung hasil ke dua
-        List<Movie> movieList1 = movie.getResults();
-        if (movieList1.size()!=0){
-            this.movieList.addAll(movieList1);
-        }else{
+        List<GenreMovie> genreMovieList1 = movie.getResults();
+        if (genreMovieList1.size() != 0) {
+            this.genreMovieList.addAll(genreMovieList1);
+        } else {
             adapter.setMoreDataAvailable(false);
             Toast.makeText(getContext(), "Tidak ada data lagi", Toast.LENGTH_SHORT).show();
         }
 
         adapter.notifyDataChanged();
+    }
+
+    @Override
+    public void startLoading() {
+//        dialog.show();
+
+    }
+
+    @Override
+    public void stopLoading() {
+//        dialog.dismiss();
     }
 }

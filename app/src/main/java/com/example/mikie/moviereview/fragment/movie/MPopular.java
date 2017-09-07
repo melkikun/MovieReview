@@ -1,6 +1,6 @@
 package com.example.mikie.moviereview.fragment.movie;
 
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.adapter.MovieAdapter;
-import com.example.mikie.moviereview.model.Movie;
+import com.example.mikie.moviereview.model.GenreMovie;
 import com.example.mikie.moviereview.model.ParentMovie;
 import com.example.mikie.moviereview.presenter.MoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 public class MPopular extends Fragment implements MoviePresenter{
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
-    private List<Movie> movieList = new ArrayList<>();
+    private List<GenreMovie> genreMovieList = new ArrayList<>();
     private MovieAdapter adapter;
     private MovieService service;
     private int page = 2;
@@ -43,7 +43,7 @@ public class MPopular extends Fragment implements MoviePresenter{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_popular, container, false);
         ButterKnife.bind(this, view);
-        adapter = new MovieAdapter(movieList, getContext());
+        adapter = new MovieAdapter(genreMovieList, getContext());
         service = new MovieServiceImpl(this, getContext());
         adapter.setOnLoadMoreListener(new MovieAdapter.OnLoadMoreListener() {
             @Override
@@ -67,22 +67,30 @@ public class MPopular extends Fragment implements MoviePresenter{
 
     @Override
     public void first(ParentMovie movie) {
-        movieList.addAll(movie.getResults());
+        genreMovieList.addAll(movie.getResults());
         adapter.notifyDataChanged();
     }
 
     @Override
     public void next(ParentMovie movie) {
-        movieList.add(new Movie(""));
-        adapter.notifyItemInserted(movieList.size());
-        movieList.remove(movieList.size()-1);
-        List<Movie> movieList1 = movie.getResults();
-        if(movieList1.size()!=0){
-            movieList.addAll(movieList1);
+        genreMovieList.add(new GenreMovie(""));
+        adapter.notifyItemInserted(genreMovieList.size());
+        genreMovieList.remove(genreMovieList.size()-1);
+        List<GenreMovie> genreMovieList1 = movie.getResults();
+        if(genreMovieList1.size()!=0){
+            genreMovieList.addAll(genreMovieList1);
         }else{
             adapter.setMoreDataAvailable(false);
             Toast.makeText(getContext(), "Tidak ada data lagi", Toast.LENGTH_SHORT).show();
         }
         adapter.notifyDataChanged();
+    }
+
+    @Override
+    public void startLoading() {
+    }
+
+    @Override
+    public void stopLoading() {
     }
 }

@@ -1,7 +1,6 @@
 package com.example.mikie.moviereview.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.model.Movie;
+import com.example.mikie.moviereview.model.GenreMovie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +26,14 @@ import butterknife.ButterKnife;
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int TYPE_MOVIE = 0;
     private int TYPE_LOAD = 1;
-    private List<Movie> movieList = new ArrayList<>();
+    private List<GenreMovie> genreMovieList = new ArrayList<>();
     private Context context;
     private boolean isLoading = false, isMoreDataAvailable = true;
     private final String IMG = "https://image.tmdb.org/t/p/w500";
     OnLoadMoreListener onLoadMoreListener;
 
-    public MovieAdapter(List<Movie> movieList, Context context) {
-        this.movieList = movieList;
+    public MovieAdapter(List<GenreMovie> genreMovieList, Context context) {
+        this.genreMovieList = genreMovieList;
         this.context = context;
     }
 
@@ -63,10 +62,10 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         if (getItemViewType(position) == TYPE_MOVIE) {
             MovieHolder holder1 = (MovieHolder) holder;
-            holder1.judul_movie.setText(movieList.get(position).getTitle());
-            holder1.rating.setText(movieList.get(position).getVoteAverage() + "");
+            holder1.judul_movie.setText(genreMovieList.get(position).getTitle());
+            holder1.rating.setText(genreMovieList.get(position).getVoteAverage() + "");
             Glide.with(this.context)
-                    .load(IMG + movieList.get(position).getPosterPath())
+                    .load(IMG + genreMovieList.get(position).getPosterPath())
                     .crossFade()
                     .override(640, 480)
                     .into(holder1.poster);
@@ -75,7 +74,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if (movieList.get(position).getId() != null) {
+        if (genreMovieList.get(position).getId() != null) {
             return TYPE_MOVIE;
         } else {
             return TYPE_LOAD;
@@ -84,7 +83,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        return genreMovieList.size();
     }
 
 
