@@ -44,5 +44,7 @@ public interface ApiMovie {
     );
 
     @GET("movie/{id}")
-    Observable test();
+    Observable test(
+            @Path("id") String id
+    );
 }
