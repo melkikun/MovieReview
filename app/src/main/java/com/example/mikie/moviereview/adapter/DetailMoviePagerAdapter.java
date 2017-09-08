@@ -35,12 +35,10 @@ public class DetailMoviePagerAdapter extends FragmentStatePagerAdapter{
 
         switch (position){
             case 0:
-                Log.d("123", "123");
                 fragment = new Info();
                 fragment.setArguments(this.bundle);
                 break;
             case 1:
-                Log.d("123", "123");
                 fragment = new Casting();
                 fragment.setArguments(this.bundle);
                 break;

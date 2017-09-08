@@ -3,13 +3,14 @@ package com.example.mikie.moviereview.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by IT01 on 9/6/2017.
  */
 
-public class ParentCastingCrew {
+public class ParentCastingCrew  implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;

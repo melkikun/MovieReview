@@ -4,7 +4,9 @@ package com.example.mikie.moviereview.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProductionCountry {
+import java.io.Serializable;
+
+public class ProductionCountry  implements Serializable {
 
     @SerializedName("iso_3166_1")
     @Expose

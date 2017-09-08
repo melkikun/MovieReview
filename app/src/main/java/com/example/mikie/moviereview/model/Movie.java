@@ -3,13 +3,14 @@ package com.example.mikie.moviereview.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by IT01 on 9/7/2017.
  */
 
-public class Movie {
+public class Movie  implements Serializable {
     @SerializedName("adult")
     @Expose
     protected Boolean adult;
@@ -85,6 +86,9 @@ public class Movie {
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
+    @SerializedName("credits")
+    @Expose
+    private List<ParentCastingCrew> castingCrews;
 
     public Boolean getAdult() {
         return adult;
@@ -284,5 +288,13 @@ public class Movie {
 
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
+    }
+
+    public List<ParentCastingCrew> getCastingCrews() {
+        return castingCrews;
+    }
+
+    public void setCastingCrews(List<ParentCastingCrew> castingCrews) {
+        this.castingCrews = castingCrews;
     }
 }

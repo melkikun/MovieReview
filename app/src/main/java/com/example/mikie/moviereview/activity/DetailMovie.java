@@ -101,6 +101,8 @@ public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnS
         tabLayout.addTab(tabLayout.newTab().setText("INFO"));
         tabLayout.addTab(tabLayout.newTab().setText("CAST"));
         tabLayout.addTab(tabLayout.newTab().setText("REVIEWS"));
+
+        //kirim data ke fragment
         Bundle bundle1 = new Bundle();
         bundle1.putString("data", id + "");
 

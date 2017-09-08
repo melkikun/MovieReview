@@ -4,18 +4,12 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:padding="10dp"
     >
-
-    <!--<android.support.v7.widget.CardView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:orientation="horizontal"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
             >
 
             <LinearLayout
@@ -29,25 +23,26 @@
                     android:layout_gravity="center_vertical"
                     >
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="96dp"
-                        android:layout_height="96dp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
                         android:src="@drawable/google"
                         android:id="@+id/casting_img"
                         />
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="96dp"
+                        android:layout_height="match_parent"
                         android:text="Miko Hendro Cahyono"
                         android:layout_toRightOf="@+id/casting_img"
                         android:textAlignment="textStart"
                         android:gravity="center_vertical"
                         android:id="@+id/casting_name"
+                        android:layout_marginLeft="7dp"
                         />
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="match_parent"
                 android:layout_weight="0.3"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
@@ -58,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:text="Pemeraan Utama"
                     android:textAlignment="textEnd"
+                    android:textStyle="italic"
                     />
             </LinearLayout>
         </LinearLayout>

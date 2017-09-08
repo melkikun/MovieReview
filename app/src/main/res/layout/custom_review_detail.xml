@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
@@ -10,24 +12,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/review_img"
-                android:src="@drawable/google"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/review_author"
-                android:text="Miko Hendro Cahyono"
                 android:layout_toRightOf="@id/review_img"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:textSize="15sp"
                 />
         </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/review_text"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:text="There's now officially (not at all officially, more like just-my-opinion-ally) twice as many good Spider-Man movies as there is bad ones. But _Homecoming_ is my favourite of the bunch. 2017 has been a great year for  the Superhero genre, and _Spider-Man: Homecoming_ does nothing to buck that trend. It's got everything a Spider-Man movie should have: Heart, humour, action, spectacle, a grounded school life, coming-of-age themes, and all this while firmly rooting itself in the Marvel Cinematic Universe -- without relying on the framework of the past to hold it up. _Spider-Man: Homecoming_ is spectacular, and it stands up both on its own, and as a part of the larger universe.\r\n\r\n_Final rating:★★★½ - I really liked it. Would strongly recommend you give it your time._"
+        android:text=""
         />
 </LinearLayout>

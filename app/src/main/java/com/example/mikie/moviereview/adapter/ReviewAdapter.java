@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.model.Review;
 
@@ -21,14 +22,13 @@ import butterknife.ButterKnife;
  * Created by IT01 on 9/7/2017.
  */
 
-public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Review> list = new ArrayList<>();
     private Context context;
-//    private LayoutInflater inflater;
+
     public ReviewAdapter(List<Review> list, Context context) {
         this.list = list;
         this.context = context;
-//        inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -43,6 +43,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         ReviewHV hv = (ReviewHV) holder;
         hv.review_author.setText(list.get(position).getAuthor());
         hv.review_text.setText(list.get(position).getContent());
+        if (position % 4 == 1) {
+            hv.review_img.setImageResource(R.drawable.review);
+        } else if (position % 4 == 2) {
+            hv.review_img.setImageResource(R.drawable.review1);
+        } else if (position % 4 == 3) {
+            hv.review_img.setImageResource(R.drawable.review2);
+        } else {
+            hv.review_img.setImageResource(R.drawable.review3);
+        }
     }
 
     @Override
@@ -50,13 +59,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return list.size();
     }
 
-    public class ReviewHV extends RecyclerView.ViewHolder{
+    public class ReviewHV extends RecyclerView.ViewHolder {
         @BindView(R.id.review_author)
         TextView review_author;
         @BindView(R.id.review_img)
         ImageView review_img;
         @BindView(R.id.review_text)
         TextView review_text;
+
         public ReviewHV(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

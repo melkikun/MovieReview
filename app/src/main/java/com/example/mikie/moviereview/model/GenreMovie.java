@@ -3,13 +3,14 @@ package com.example.mikie.moviereview.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by IT01 on 8/31/2017.
  */
 
-public class GenreMovie {
+public class GenreMovie  implements Serializable {
     @SerializedName("vote_count")
     @Expose
     private Double voteCount;

@@ -4,7 +4,9 @@ package com.example.mikie.moviereview.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SpokenLanguage {
+import java.io.Serializable;
+
+public class SpokenLanguage  implements Serializable {
 
     @SerializedName("iso_639_1")
     @Expose
