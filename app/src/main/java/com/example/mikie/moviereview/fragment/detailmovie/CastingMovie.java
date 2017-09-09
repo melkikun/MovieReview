@@ -6,16 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.adapter.ReviewAdapter;
+import com.example.mikie.moviereview.adapter.CastingAdapter;
 import com.example.mikie.moviereview.custom.DividerItemDecoration;
-import com.example.mikie.moviereview.model.ParentReview;
-import com.example.mikie.moviereview.presenter.ReviewPresenter;
+import com.example.mikie.moviereview.model.ParentCastingCrew;
+import com.example.mikie.moviereview.presenter.CastingMoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
 import com.example.mikie.moviereview.services.impl.MovieServiceImpl;
 
@@ -26,30 +25,29 @@ import butterknife.ButterKnife;
  * Created by IT01 on 9/6/2017.
  */
 
-public class Review extends Fragment implements ReviewPresenter{
-    @BindView(R.id.rv_review)
+public class CastingMovie extends Fragment implements CastingMoviePresenter {
+    @BindView(R.id.rv_casting)
     RecyclerView recyclerView;
-    private ReviewAdapter adapter;
+    private CastingAdapter castingAdapter;
     private MovieService service;
-    private final String TAG = getClass().getCanonicalName();
+    private final String TAG = getClass().getSimpleName();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.review_detail_movie, container, false);
+        View view = inflater.inflate(R.layout.casting_detail, container, false);
         ButterKnife.bind(this, view);
         Bundle args = getArguments();
         service = new MovieServiceImpl(this, getContext());
-        service.reviewMovie(args.getString("data"), "en", null);
+        service.castingMovie(args.getString("data"));
         return view;
     }
 
     @Override
-    public void loadReview(ParentReview parentReview) {
-        adapter = new ReviewAdapter(parentReview.getResults(), getContext());
-        recyclerView.setHasFixedSize(true);
+    public void load(ParentCastingCrew parentCastingCrew) {
+        castingAdapter = new CastingAdapter(getContext(), parentCastingCrew.getCast());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(castingAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
     }
 }

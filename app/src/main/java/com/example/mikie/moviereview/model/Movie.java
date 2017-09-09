@@ -89,6 +89,16 @@ public class Movie  implements Serializable {
     @SerializedName("credits")
     @Expose
     private List<ParentCastingCrew> castingCrews;
+    @SerializedName("videos")
+    @Expose
+    private ParentVideo parentVideos;
+    @SerializedName("images")
+    @Expose
+    private ParentBackdropPoster parentBackdropPoster;
+    @SerializedName("similar")
+    @Expose
+    private ParentSimilar parentSimilar;
+
 
     public Boolean getAdult() {
         return adult;
@@ -296,5 +306,29 @@ public class Movie  implements Serializable {
 
     public void setCastingCrews(List<ParentCastingCrew> castingCrews) {
         this.castingCrews = castingCrews;
+    }
+
+    public ParentVideo getParentVideos() {
+        return parentVideos;
+    }
+
+    public void setParentVideos(ParentVideo parentVideos) {
+        this.parentVideos = parentVideos;
+    }
+
+    public ParentBackdropPoster getParentBackdropPoster() {
+        return parentBackdropPoster;
+    }
+
+    public void setParentBackdropPoster(ParentBackdropPoster parentBackdropPoster) {
+        this.parentBackdropPoster = parentBackdropPoster;
+    }
+
+    public ParentSimilar getParentSimilar() {
+        return parentSimilar;
+    }
+
+    public void setParentSimilar(ParentSimilar parentSimilar) {
+        this.parentSimilar = parentSimilar;
     }
 }

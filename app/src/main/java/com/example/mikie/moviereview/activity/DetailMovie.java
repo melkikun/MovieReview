@@ -32,7 +32,7 @@ import com.example.mikie.moviereview.model.Genre;
 import com.example.mikie.moviereview.model.Movie;
 import com.example.mikie.moviereview.model.ParentBackdropPoster;
 import com.example.mikie.moviereview.presenter.DetailMoviePresenter;
-import com.example.mikie.moviereview.presenter.PosterPresenter;
+import com.example.mikie.moviereview.presenter.PosterMoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
 import com.example.mikie.moviereview.services.impl.MovieServiceImpl;
 
@@ -43,7 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
-        ViewPagerEx.OnPageChangeListener, DetailMoviePresenter, PosterPresenter {
+        ViewPagerEx.OnPageChangeListener, DetailMoviePresenter, PosterMoviePresenter {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tab_layout)
@@ -94,8 +94,8 @@ public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnS
 
         //panggil class movie service
         service = new MovieServiceImpl((DetailMoviePresenter) this, getApplicationContext());
-        service.detailMovie(id + "");
-        service2 = new MovieServiceImpl((PosterPresenter) this, getApplicationContext());
+        service.detailMovie(id + "", null, null);
+        service2 = new MovieServiceImpl((PosterMoviePresenter) this, getApplicationContext());
         service2.posterMovie(id + "", "en", "en");
 
         tabLayout.addTab(tabLayout.newTab().setText("INFO"));
@@ -194,7 +194,7 @@ public class DetailMovie extends AppCompatActivity implements BaseSliderView.OnS
         type2.setText(movie.getReleaseDate().substring(0, 4));
         type3.setText(hours + " hr " + minutes + " mins ");
         genre.setText(genre_);
-        judul.setText(movie.getOriginalTitle());
+        judul.setText(movie.getOriginalTitle()+"-"+movie.getId());
         Glide.with(this).load(IMG + movie.getPosterPath()).diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().into(logo);
 
         type1.setOnClickListener(new View.OnClickListener() {

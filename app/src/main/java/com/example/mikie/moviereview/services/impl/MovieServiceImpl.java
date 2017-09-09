@@ -2,13 +2,9 @@ package com.example.mikie.moviereview.services.impl;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.activity.DetailMovie;
 import com.example.mikie.moviereview.api.ApiMovie;
 import com.example.mikie.moviereview.api.ApiRest;
 import com.example.mikie.moviereview.model.Movie;
@@ -16,12 +12,13 @@ import com.example.mikie.moviereview.model.ParentBackdropPoster;
 import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.model.ParentMovie;
 import com.example.mikie.moviereview.model.ParentReview;
-import com.example.mikie.moviereview.model.Poster;
-import com.example.mikie.moviereview.presenter.CastingPresenter;
+import com.example.mikie.moviereview.model.ParentVideo;
+import com.example.mikie.moviereview.presenter.CastingMoviePresenter;
 import com.example.mikie.moviereview.presenter.DetailMoviePresenter;
-import com.example.mikie.moviereview.presenter.MoviePresenter;
-import com.example.mikie.moviereview.presenter.PosterPresenter;
-import com.example.mikie.moviereview.presenter.ReviewPresenter;
+import com.example.mikie.moviereview.presenter.ListMoviePresenter;
+import com.example.mikie.moviereview.presenter.TrailerMoviePresenter;
+import com.example.mikie.moviereview.presenter.PosterMoviePresenter;
+import com.example.mikie.moviereview.presenter.ReviewMoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
 
 import rx.Observable;
@@ -35,21 +32,22 @@ import rx.schedulers.Schedulers;
 
 public class MovieServiceImpl implements MovieService{
     private ApiMovie api = ApiRest.retrofit().create(ApiMovie.class);
-    private Context context;
-    private MoviePresenter moviePresenter;
-    private CastingPresenter castingPresenter;
+    private ListMoviePresenter listMoviePresenter;
+    private CastingMoviePresenter castingMoviePresenter;
     private DetailMoviePresenter detailMoviePresenter;
-    private PosterPresenter posterPresenter;
-    private ReviewPresenter reviewPresenter;
+    private PosterMoviePresenter posterMoviePresenter;
+    private ReviewMoviePresenter reviewMoviePresenter;
+    private TrailerMoviePresenter trailerMoviePresenter;
+    private Context context;
     private ProgressDialog dialog;
 
-    public MovieServiceImpl(MoviePresenter moviePresenter, Context context) {
-        this.moviePresenter = moviePresenter;
+    public MovieServiceImpl(ListMoviePresenter listMoviePresenter, Context context) {
+        this.listMoviePresenter = listMoviePresenter;
         this.context = context;
     }
 
-    public MovieServiceImpl(CastingPresenter castingPresenter, Context context) {
-        this.castingPresenter = castingPresenter;
+    public MovieServiceImpl(CastingMoviePresenter castingMoviePresenter, Context context) {
+        this.castingMoviePresenter = castingMoviePresenter;
         this.context = context;
     }
 
@@ -58,14 +56,19 @@ public class MovieServiceImpl implements MovieService{
         this.context = context;
     }
 
-    public MovieServiceImpl(PosterPresenter posterPresenter, Context context) {
-        this.posterPresenter = posterPresenter;
+    public MovieServiceImpl(PosterMoviePresenter posterMoviePresenter, Context context) {
+        this.posterMoviePresenter = posterMoviePresenter;
         this.context = context;
     }
 
-    public MovieServiceImpl(ReviewPresenter reviewPresenter, Context context) {
-        this.reviewPresenter = reviewPresenter;
+    public MovieServiceImpl(ReviewMoviePresenter reviewMoviePresenter, Context context) {
+        this.reviewMoviePresenter = reviewMoviePresenter;
         this.context = context;
+    }
+
+    public MovieServiceImpl(TrailerMoviePresenter trailerMoviePresenter, Context context) {
+        this.context = context;
+        this.trailerMoviePresenter = trailerMoviePresenter;
     }
 
     @Override
@@ -74,14 +77,14 @@ public class MovieServiceImpl implements MovieService{
 //        dialog.setCancelable(false);
 //        dialog.setProgressStyle(this.context.R.);
         dialog.show();
-        moviePresenter.startLoading();
+        listMoviePresenter.startLoading();
         Observable<ParentMovie> observable = api.getMovie(jenis_, context.getString(R.string.api_key), language_, page_, region_);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ParentMovie>() {
                     @Override
                     public void onCompleted() {
-                        moviePresenter.stopLoading();
+                        listMoviePresenter.stopLoading();
                         dialog.dismiss();
                     }
 
@@ -93,9 +96,9 @@ public class MovieServiceImpl implements MovieService{
                     @Override
                     public void onNext(ParentMovie parentMovie) {
                         if(page_ == 1){
-                            moviePresenter.first(parentMovie);
+                            listMoviePresenter.first(parentMovie);
                         }else{
-                            moviePresenter.next(parentMovie);
+                            listMoviePresenter.next(parentMovie);
                         }
                     }
                 });
@@ -120,15 +123,15 @@ public class MovieServiceImpl implements MovieService{
 
                     @Override
                     public void onNext(ParentCastingCrew parentCastingCrew) {
-                        castingPresenter.load(parentCastingCrew);
+                        castingMoviePresenter.load(parentCastingCrew);
                     }
                 });
     }
 
     @Override
-    public void detailMovie(String id) {
+    public void detailMovie(String id, String language, String atr) {
         detailMoviePresenter.startLoading();
-        Observable<Movie> observable = api.getDetailMovie(id, this.context.getString(R.string.api_key), null, null);
+        Observable<Movie> observable = api.getDetailMovie(id, this.context.getString(R.string.api_key), language, atr);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Movie>() {
@@ -139,7 +142,7 @@ public class MovieServiceImpl implements MovieService{
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("error", e.getMessage());
+                        Log.d("error detail movie", e.getMessage());
                     }
 
                     @Override
@@ -167,7 +170,7 @@ public class MovieServiceImpl implements MovieService{
 
                    @Override
                    public void onNext(ParentBackdropPoster parentBackdropPoster) {
-                       posterPresenter.loadPoster(parentBackdropPoster);
+                       posterMoviePresenter.loadPoster(parentBackdropPoster);
                    }
                });
     }
@@ -190,8 +193,46 @@ public class MovieServiceImpl implements MovieService{
 
                     @Override
                     public void onNext(ParentReview parentReview) {
-                        reviewPresenter.loadReview(parentReview);
+                        reviewMoviePresenter.loadReview(parentReview);
                     }
                 });
+    }
+
+    @Override
+    public void trailerMovie(String id, String language) {
+        Observable<ParentVideo> observable = api.getVideo(id, this.context.getString(R.string.api_key), language);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ParentVideo>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("error trailer", e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ParentVideo parentVideo) {
+                        trailerMoviePresenter.loadMovie(parentVideo);
+                    }
+                });
+    }
+
+    @Override
+    public void collectionMovie(String id, String language) {
+
+    }
+
+    @Override
+    public void creditMovie(String id, String language) {
+
+    }
+
+    @Override
+    public void similarMovie(String id, String language) {
+
     }
 }

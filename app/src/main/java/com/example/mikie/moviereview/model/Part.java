@@ -3,14 +3,14 @@ package com.example.mikie.moviereview.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by IT01 on 9/6/2017.
+ * Created by IT01 on 9/9/2017.
  */
 
-public class Similar  implements Serializable {
+public class Part {
+
     @SerializedName("adult")
     @Expose
     private Boolean adult;
@@ -165,4 +165,5 @@ public class Similar  implements Serializable {
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
     }
+
 }

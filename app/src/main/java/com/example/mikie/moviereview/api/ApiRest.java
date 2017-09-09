@@ -20,7 +20,7 @@ public class ApiRest {
                 .baseUrl("https://api.themoviedb.org/3/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(builder.build())
+//                .client(builder.build())
                 .build();
         return r;
     }

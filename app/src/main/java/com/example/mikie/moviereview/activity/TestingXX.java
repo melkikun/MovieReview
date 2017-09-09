@@ -7,11 +7,11 @@ import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.model.ParentBackdropPoster;
-import com.example.mikie.moviereview.presenter.PosterPresenter;
+import com.example.mikie.moviereview.presenter.PosterMoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
 import com.example.mikie.moviereview.services.impl.MovieServiceImpl;
 
-public class TestingXX extends AppCompatActivity implements PosterPresenter{
+public class TestingXX extends AppCompatActivity implements PosterMoviePresenter {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

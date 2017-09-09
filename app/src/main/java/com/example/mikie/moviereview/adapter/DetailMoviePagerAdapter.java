@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
-import com.example.mikie.moviereview.fragment.detailmovie.Casting;
-import com.example.mikie.moviereview.fragment.detailmovie.Info;
-import com.example.mikie.moviereview.fragment.detailmovie.Review;
+import com.example.mikie.moviereview.fragment.detailmovie.CastingMovie;
+import com.example.mikie.moviereview.fragment.detailmovie.InfoMovie;
+import com.example.mikie.moviereview.fragment.detailmovie.ReviewMovie;
 
 /**
  * Created by IT01 on 9/4/2017.
@@ -35,15 +34,15 @@ public class DetailMoviePagerAdapter extends FragmentStatePagerAdapter{
 
         switch (position){
             case 0:
-                fragment = new Info();
+                fragment = new InfoMovie();
                 fragment.setArguments(this.bundle);
                 break;
             case 1:
-                fragment = new Casting();
+                fragment = new CastingMovie();
                 fragment.setArguments(this.bundle);
                 break;
             case 2:
-                fragment = new Review();
+                fragment = new ReviewMovie();
                 fragment.setArguments(this.bundle);
                 break;
             default:

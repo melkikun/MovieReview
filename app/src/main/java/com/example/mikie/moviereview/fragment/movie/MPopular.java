@@ -1,6 +1,5 @@
 package com.example.mikie.moviereview.fragment.movie;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,7 @@ import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.adapter.MovieAdapter;
 import com.example.mikie.moviereview.model.GenreMovie;
 import com.example.mikie.moviereview.model.ParentMovie;
-import com.example.mikie.moviereview.presenter.MoviePresenter;
+import com.example.mikie.moviereview.presenter.ListMoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
 import com.example.mikie.moviereview.services.impl.MovieServiceImpl;
 
@@ -30,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by IT01 on 9/4/2017.
  */
 
-public class MPopular extends Fragment implements MoviePresenter{
+public class MPopular extends Fragment implements ListMoviePresenter {
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
     private List<GenreMovie> genreMovieList = new ArrayList<>();

@@ -19,7 +19,7 @@ import com.example.mikie.moviereview.adapter.MovieAdapter;
 import com.example.mikie.moviereview.custom.RecyclerItemClickListener;
 import com.example.mikie.moviereview.model.GenreMovie;
 import com.example.mikie.moviereview.model.ParentMovie;
-import com.example.mikie.moviereview.presenter.MoviePresenter;
+import com.example.mikie.moviereview.presenter.ListMoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
 import com.example.mikie.moviereview.services.impl.MovieServiceImpl;
 
@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
  * Created by IT01 on 8/29/2017.
  */
 
-public class MNowPlaying extends Fragment implements MoviePresenter {
+public class MNowPlaying extends Fragment implements ListMoviePresenter {
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
     private List<GenreMovie> genreMovieList = new ArrayList<>();

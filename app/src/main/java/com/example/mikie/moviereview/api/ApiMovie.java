@@ -4,9 +4,11 @@ import com.example.mikie.moviereview.model.ListGenre;
 import com.example.mikie.moviereview.model.Movie;
 import com.example.mikie.moviereview.model.ParentBackdropPoster;
 import com.example.mikie.moviereview.model.ParentCastingCrew;
+import com.example.mikie.moviereview.model.ParentCollection;
 import com.example.mikie.moviereview.model.ParentGenreDetail;
 import com.example.mikie.moviereview.model.ParentMovie;
 import com.example.mikie.moviereview.model.ParentReview;
+import com.example.mikie.moviereview.model.ParentVideo;
 import com.example.mikie.moviereview.model.Poster;
 
 import retrofit2.http.GET;
@@ -60,5 +62,33 @@ public interface ApiMovie {
             @Query("page") String iil
     );
 
+    @GET("movie/{id}/videos")
+    Observable<ParentVideo> getVideo(
+            @Path("id") String id,
+            @Query("api_key") String api,
+            @Query("language") String language
+    );
+
+    @GET("collection/{id}")
+    Observable<ParentCollection> getCollection(
+            @Path("id") String id,
+            @Query("api_key") String api,
+            @Query("language") String language
+    );
+
+    @GET("person/{id}/movie_credits")
+    Observable<ParentCastingCrew> getMovieCredit(
+            @Path("id") String id,
+            @Query("api_key") String api,
+            @Query("language") String language
+    );
+
+    @GET("movie/{id}/similar")
+    Observable<ParentCastingCrew> getSimilar(
+            @Path("id") String id,
+            @Query("api_key") String api,
+            @Query("language") String language,
+            @Query("language") String page
+    );
 
 }
