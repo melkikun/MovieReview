@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.mikie.moviereview.fragment.detailmovie.CastingMovie;
 import com.example.mikie.moviereview.fragment.detailmovie.InfoMovie;
+import com.example.mikie.moviereview.fragment.detailmovie.InfoMovie2;
 import com.example.mikie.moviereview.fragment.detailmovie.ReviewMovie;
 
 /**
@@ -34,7 +35,7 @@ public class DetailMoviePagerAdapter extends FragmentStatePagerAdapter{
 
         switch (position){
             case 0:
-                fragment = new InfoMovie();
+                fragment = new InfoMovie2();
                 fragment.setArguments(this.bundle);
                 break;
             case 1:

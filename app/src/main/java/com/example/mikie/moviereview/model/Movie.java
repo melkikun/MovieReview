@@ -86,9 +86,6 @@ public class Movie  implements Serializable {
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
-    @SerializedName("credits")
-    @Expose
-    private List<ParentCastingCrew> castingCrews;
     @SerializedName("videos")
     @Expose
     private ParentVideo parentVideos;
@@ -98,6 +95,9 @@ public class Movie  implements Serializable {
     @SerializedName("similar")
     @Expose
     private ParentSimilar parentSimilar;
+    @SerializedName("credits")
+    @Expose
+    private ParentCastingCrew parentCastingCrew;
 
 
     public Boolean getAdult() {
@@ -300,14 +300,6 @@ public class Movie  implements Serializable {
         this.voteCount = voteCount;
     }
 
-    public List<ParentCastingCrew> getCastingCrews() {
-        return castingCrews;
-    }
-
-    public void setCastingCrews(List<ParentCastingCrew> castingCrews) {
-        this.castingCrews = castingCrews;
-    }
-
     public ParentVideo getParentVideos() {
         return parentVideos;
     }
@@ -330,5 +322,13 @@ public class Movie  implements Serializable {
 
     public void setParentSimilar(ParentSimilar parentSimilar) {
         this.parentSimilar = parentSimilar;
+    }
+
+    public ParentCastingCrew getParentCastingCrew() {
+        return parentCastingCrew;
+    }
+
+    public void setParentCastingCrew(ParentCastingCrew parentCastingCrew) {
+        this.parentCastingCrew = parentCastingCrew;
     }
 }
