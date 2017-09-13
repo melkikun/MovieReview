@@ -1,5 +1,6 @@
 package com.example.mikie.moviereview.fragment.movie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mikie.moviereview.R;
+import com.example.mikie.moviereview.activity.DetailMovie;
 import com.example.mikie.moviereview.adapter.MovieAdapter;
+import com.example.mikie.moviereview.custom.RecyclerItemClickListener;
 import com.example.mikie.moviereview.model.GenreMovie;
 import com.example.mikie.moviereview.model.ParentMovie;
 import com.example.mikie.moviereview.presenter.ListMoviePresenter;
@@ -60,6 +63,14 @@ public class MPopular extends Fragment implements ListMoviePresenter {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getContext(), DetailMovie.class);
+                intent.putExtra("id", genreMovieList.get(position).getId());
+                startActivity(intent);
+            }
+        }));
         service.loadMovie("popular", null, 1, null);
         return view;
     }

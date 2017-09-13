@@ -2,6 +2,7 @@ package com.example.mikie.moviereview.services.impl;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.mikie.moviereview.R;
@@ -10,10 +11,12 @@ import com.example.mikie.moviereview.api.ApiRest;
 import com.example.mikie.moviereview.model.Movie;
 import com.example.mikie.moviereview.model.ParentBackdropPoster;
 import com.example.mikie.moviereview.model.ParentCastingCrew;
+import com.example.mikie.moviereview.model.ParentCollection;
 import com.example.mikie.moviereview.model.ParentMovie;
 import com.example.mikie.moviereview.model.ParentReview;
 import com.example.mikie.moviereview.model.ParentVideo;
 import com.example.mikie.moviereview.presenter.CastingMoviePresenter;
+import com.example.mikie.moviereview.presenter.CollectionMoviePresenter;
 import com.example.mikie.moviereview.presenter.DetailMoviePresenter;
 import com.example.mikie.moviereview.presenter.ListMoviePresenter;
 import com.example.mikie.moviereview.presenter.TrailerMoviePresenter;
@@ -30,7 +33,8 @@ import rx.schedulers.Schedulers;
  * Created by IT01 on 8/31/2017.
  */
 
-public class MovieServiceImpl implements MovieService{
+public class MovieServiceImpl implements MovieService {
+    private Context context;
     private ApiMovie api = ApiRest.retrofit().create(ApiMovie.class);
     private ListMoviePresenter listMoviePresenter;
     private CastingMoviePresenter castingMoviePresenter;
@@ -38,8 +42,9 @@ public class MovieServiceImpl implements MovieService{
     private PosterMoviePresenter posterMoviePresenter;
     private ReviewMoviePresenter reviewMoviePresenter;
     private TrailerMoviePresenter trailerMoviePresenter;
-    private Context context;
+    private CollectionMoviePresenter collectionMoviePresenter;
     private ProgressDialog dialog;
+    private RecyclerView.ViewHolder holder;
 
     public MovieServiceImpl(ListMoviePresenter listMoviePresenter, Context context) {
         this.listMoviePresenter = listMoviePresenter;
@@ -71,9 +76,15 @@ public class MovieServiceImpl implements MovieService{
         this.trailerMoviePresenter = trailerMoviePresenter;
     }
 
+    public MovieServiceImpl(CollectionMoviePresenter collectionMoviePresenter, Context context, RecyclerView.ViewHolder holder) {
+        this.context = context;
+        this.collectionMoviePresenter = collectionMoviePresenter;
+        this.holder = holder;
+    }
+
     @Override
     public void loadMovie(String jenis_, String language_, final int page_, String region_) {
-        dialog =  new ProgressDialog(context, R.style.MyTheme);
+        dialog = new ProgressDialog(context, R.style.MyTheme);
 //        dialog.setCancelable(false);
 //        dialog.setProgressStyle(this.context.R.);
         dialog.show();
@@ -95,9 +106,9 @@ public class MovieServiceImpl implements MovieService{
 
                     @Override
                     public void onNext(ParentMovie parentMovie) {
-                        if(page_ == 1){
+                        if (page_ == 1) {
                             listMoviePresenter.first(parentMovie);
-                        }else{
+                        } else {
                             listMoviePresenter.next(parentMovie);
                         }
                     }
@@ -154,25 +165,25 @@ public class MovieServiceImpl implements MovieService{
 
     @Override
     public void posterMovie(String id, String language, String iil) {
-        Observable<ParentBackdropPoster> observable = api.getPosterMovie(id, this.context.getString(R.string.api_key),language, iil);
-       observable.subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread())
-               .subscribe(new Subscriber<ParentBackdropPoster>() {
-                   @Override
-                   public void onCompleted() {
+        Observable<ParentBackdropPoster> observable = api.getPosterMovie(id, this.context.getString(R.string.api_key), language, iil);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ParentBackdropPoster>() {
+                    @Override
+                    public void onCompleted() {
 
-                   }
+                    }
 
-                   @Override
-                   public void onError(Throwable e) {
-                       Log.d("error", e.getMessage());
-                   }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("error", e.getMessage());
+                    }
 
-                   @Override
-                   public void onNext(ParentBackdropPoster parentBackdropPoster) {
-                       posterMoviePresenter.loadPoster(parentBackdropPoster);
-                   }
-               });
+                    @Override
+                    public void onNext(ParentBackdropPoster parentBackdropPoster) {
+                        posterMoviePresenter.loadPoster(parentBackdropPoster);
+                    }
+                });
     }
 
     @Override
@@ -223,7 +234,25 @@ public class MovieServiceImpl implements MovieService{
 
     @Override
     public void collectionMovie(String id, String language) {
+        Observable<ParentCollection> observable = api.getCollection(id, this.context.getString(R.string.api_key), language);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ParentCollection>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("error collection", e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ParentCollection parentCollection) {
+                        collectionMoviePresenter.loadCollection(parentCollection, holder);
+                    }
+                });
     }
 
     @Override

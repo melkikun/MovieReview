@@ -19,7 +19,7 @@ public class Movie  implements Serializable {
     private String backdropPath;
     @SerializedName("belongs_to_collection")
     @Expose
-    private Object belongsToCollection;
+    private BelongsToCollection belongsToCollection;
     @SerializedName("budget")
     @Expose
     private Integer budget;
@@ -114,14 +114,6 @@ public class Movie  implements Serializable {
 
     public void setBackdropPath(String backdropPath) {
         this.backdropPath = backdropPath;
-    }
-
-    public Object getBelongsToCollection() {
-        return belongsToCollection;
-    }
-
-    public void setBelongsToCollection(Object belongsToCollection) {
-        this.belongsToCollection = belongsToCollection;
     }
 
     public Integer getBudget() {
@@ -330,5 +322,13 @@ public class Movie  implements Serializable {
 
     public void setParentCastingCrew(ParentCastingCrew parentCastingCrew) {
         this.parentCastingCrew = parentCastingCrew;
+    }
+
+    public BelongsToCollection getBelongsToCollection() {
+        return belongsToCollection;
+    }
+
+    public void setBelongsToCollection(BelongsToCollection belongsToCollection) {
+        this.belongsToCollection = belongsToCollection;
     }
 }

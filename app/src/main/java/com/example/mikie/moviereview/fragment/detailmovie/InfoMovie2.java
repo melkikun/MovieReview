@@ -1,24 +1,18 @@
 package com.example.mikie.moviereview.fragment.detailmovie;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.mikie.moviereview.R;
-import com.example.mikie.moviereview.adapter.SimilarAdapter;
-import com.example.mikie.moviereview.adapter.TrailerAdapter;
-import com.example.mikie.moviereview.adapter.VerticalRv;
+import com.example.mikie.moviereview.adapter.MoreInfoAdapter;
 import com.example.mikie.moviereview.custom.DividerItemDecoration;
-import com.example.mikie.moviereview.model.CategoryInfo;
 import com.example.mikie.moviereview.model.Movie;
 import com.example.mikie.moviereview.presenter.DetailMoviePresenter;
 import com.example.mikie.moviereview.services.MovieService;
@@ -34,14 +28,14 @@ import butterknife.ButterKnife;
  * Created by IT01 on 9/4/2017.
  */
 
-public class InfoMovie2 extends Fragment implements DetailMoviePresenter{
+public class InfoMovie2 extends Fragment implements DetailMoviePresenter {
     private MovieService service;
     private final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
     private final String TAG = getClass().getName();
     @BindView(R.id.rv_vertical)
     RecyclerView recyclerView;
-    @BindView(R.id.namacasting)
-    TextView namacasting;
+    private List<String> category = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,18 +49,13 @@ public class InfoMovie2 extends Fragment implements DetailMoviePresenter{
 
     @Override
     public void loadMovie(Movie movie) {
-        CategoryInfo categoryInfo = new CategoryInfo("Ratings");
-        CategoryInfo categoryInfo2 = new CategoryInfo("Review");
-        CategoryInfo categoryInfo3 = new CategoryInfo("Trailers");
-        CategoryInfo categoryInfo4 = new CategoryInfo("More From Author");
-        CategoryInfo categoryInfo5 = new CategoryInfo("Similar Movie");
-        List<CategoryInfo> list = new ArrayList<>();
-        list.add(categoryInfo);
-        list.add(categoryInfo2);
-        list.add(categoryInfo3);
-        list.add(categoryInfo4);
-        list.add(categoryInfo5);
-        VerticalRv adapter = new VerticalRv(list, getContext(), movie);
+        category.add("");
+        category.add("");
+        category.add("");
+        category.add("");
+        category.add("");
+        category.add("");
+        MoreInfoAdapter adapter = new MoreInfoAdapter(category, getContext(), movie);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
