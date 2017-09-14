@@ -7,6 +7,7 @@ import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.model.ParentCollection;
 import com.example.mikie.moviereview.model.ParentGenreDetail;
 import com.example.mikie.moviereview.model.ParentMovie;
+import com.example.mikie.moviereview.model.ParentPerson;
 import com.example.mikie.moviereview.model.ParentReview;
 import com.example.mikie.moviereview.model.ParentVideo;
 import com.example.mikie.moviereview.model.Poster;
@@ -33,12 +34,12 @@ public interface ApiMovie {
 
     @GET("movie/{id}/credits")
     Observable<ParentCastingCrew> getCasting(
-        @Path("id") String id,
-        @Query("api_key") String api_key
+            @Path("id") String id,
+            @Query("api_key") String api_key
     );
 
     @GET("movie/{id}")
-    Observable <Movie> getDetailMovie(
+    Observable<Movie> getDetailMovie(
             @Path("id") String id,
             @Query("api_key") String api,
             @Query("language") String language,
@@ -91,4 +92,10 @@ public interface ApiMovie {
             @Query("language") String page
     );
 
+    @GET("person/{id}/movie_credits")
+    Observable<ParentPerson> getSimilarFromPerson(
+            @Path("id") String id,
+            @Query("api_key") String api,
+            @Query("language") String language
+    );
 }

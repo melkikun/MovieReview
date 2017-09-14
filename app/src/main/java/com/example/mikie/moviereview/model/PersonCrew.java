@@ -54,7 +54,7 @@ public class PersonCrew implements Serializable{
     private List<Integer> genreIds = null;
     @SerializedName("vote_average")
     @Expose
-    private Integer voteAverage;
+    private Double voteAverage;
     @SerializedName("adult")
     @Expose
     private Boolean adult;
@@ -169,11 +169,11 @@ public class PersonCrew implements Serializable{
         this.genreIds = genreIds;
     }
 
-    public Integer getVoteAverage() {
+    public Double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(Integer voteAverage) {
+    public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
     }
 

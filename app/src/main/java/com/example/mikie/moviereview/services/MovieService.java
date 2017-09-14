@@ -14,4 +14,5 @@ public interface MovieService {
     void collectionMovie(String id, String language);
     void creditMovie(String id, String language);
     void similarMovie(String id, String language);
+    void moreFromPerson(String id, String language);
 }

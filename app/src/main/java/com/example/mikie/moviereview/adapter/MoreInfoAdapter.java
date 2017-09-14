@@ -15,7 +15,10 @@ import com.example.mikie.moviereview.R;
 import com.example.mikie.moviereview.model.Crew;
 import com.example.mikie.moviereview.model.Movie;
 import com.example.mikie.moviereview.model.ParentCollection;
+import com.example.mikie.moviereview.model.ParentPerson;
+import com.example.mikie.moviereview.model.PersonCrew;
 import com.example.mikie.moviereview.presenter.CollectionMoviePresenter;
+import com.example.mikie.moviereview.presenter.MoreFromPersonPresenter;
 import com.example.mikie.moviereview.services.MovieService;
 import com.example.mikie.moviereview.services.impl.MovieServiceImpl;
 
@@ -29,14 +32,22 @@ import butterknife.ButterKnife;
  * Created by IT01 on 9/11/2017.
  */
 
-public class MoreInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements CollectionMoviePresenter {
+public class MoreInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements CollectionMoviePresenter, MoreFromPersonPresenter {
     private List<String> list = new ArrayList<>();
     private Context context;
-    private HorizontalTrailer horizontalTrailer;
-    private HorizontalVideoAdapter horizontalVideoAdapter;
+    private HorizontalTrailerAdapter horizontalTrailerAdapter;
     private HorizontalCollectionAdapter horizontalCollectionAdapter;
+    private HorizontalSimilarAdapter horizontalSimilarAdapter;
+    private HorizontalAuthorAdapter horizontalAuthorAdapter;
     private Movie movie;
     private MovieService service;
+    private MovieService service2;
+    private String directur = "";
+    private String directurID = "";
+    private List<String> posterList = new ArrayList<>();
+    private List<String> collectionList = new ArrayList<>();
+
+    private final String TAG = getClass().getName();
 
     public MoreInfoAdapter(List<String> list, Context context, Movie movie) {
         this.list = list;
@@ -75,17 +86,18 @@ public class MoreInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        for (Crew crew : movie.getParentCastingCrew().getCrew()) {
+            if (crew.getJob().equals("Director")) {
+                directur = crew.getName();
+                directurID = crew.getId() + "";
+                break;
+            }
+        }
         if (position == 0) {
             RatingHolder ratingHolder = (RatingHolder) holder;
         }
         if (position == 1) {
-            String directur = "";
-            for (Crew crew : movie.getParentCastingCrew().getCrew()) {
-                if (crew.getJob() == "Director") {
-                    directur = crew.getName();
-                    break;
-                }
-            }
+
             SummaryHolder summaryHolder = (SummaryHolder) holder;
             summaryHolder.summary_text.setText(movie.getOverview());
             summaryHolder.release_date.setText("Release Date : " + movie.getReleaseDate());
@@ -95,22 +107,34 @@ public class MoreInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             summaryHolder.revenue.setText("Revenue : " + movie.getRevenue());
         }
         if (position == 2) {
-
             if (movie.getBelongsToCollection() != null) {
-                service = new MovieServiceImpl(this, context, holder);
+                service = new MovieServiceImpl((CollectionMoviePresenter) this, context, holder);
                 service.collectionMovie(movie.getBelongsToCollection().getId() + "", "en");
-            } else {
-
             }
         }
         if (position == 3) {
-            TrailerHolder trailerHolder = (TrailerHolder) holder;
+            if (movie.getParentVideos().getResults().size() != 0) {
+                TrailerHolder trailerHolder = (TrailerHolder) holder;
+                trailerHolder.rv_trailer.setHasFixedSize(true);
+                trailerHolder.rv_trailer.setItemAnimator(new DefaultItemAnimator());
+                trailerHolder.rv_trailer.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                horizontalSimilarAdapter = new HorizontalSimilarAdapter(movie.getParentSimilar().getResults(), context);
+                trailerHolder.rv_trailer.setAdapter(horizontalSimilarAdapter);
+            }
         }
         if (position == 4) {
-            MoreFromAuthorHolder moreFromAuthorHolder = (MoreFromAuthorHolder) holder;
+            service2 = new MovieServiceImpl((MoreFromPersonPresenter) this, context, holder);
+            service2.moreFromPerson(directurID, "en-EN");
         }
         if (position == 5) {
-            SimilarHolder similarHolder = (SimilarHolder) holder;
+            if (movie.getParentSimilar().getResults().size() != 0) {
+                SimilarHolder similarHolder = (SimilarHolder) holder;
+                similarHolder.rv_similar.setHasFixedSize(true);
+                similarHolder.rv_similar.setItemAnimator(new DefaultItemAnimator());
+                similarHolder.rv_similar.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                horizontalTrailerAdapter = new HorizontalTrailerAdapter(movie.getParentVideos().getResults(), context);
+                similarHolder.rv_similar.setAdapter(horizontalTrailerAdapter);
+            }
         }
     }
 
@@ -122,18 +146,37 @@ public class MoreInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void loadCollection(ParentCollection parentCollection, RecyclerView.ViewHolder holder) {
         CollectionHolder collectionHolder = (CollectionHolder) holder;
-        List<String> strings = new ArrayList<>();
+
         for (int i = 0; i < parentCollection.getParts().size(); i++) {
-            strings.add(parentCollection.getParts().get(i).getPosterPath());
+            collectionList.add(parentCollection.getParts().get(i).getPosterPath());
         }
 
         collectionHolder.rv_collection.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         collectionHolder.rv_collection.setItemAnimator(new DefaultItemAnimator());
-        horizontalCollectionAdapter = new HorizontalCollectionAdapter(strings, context);
+        horizontalCollectionAdapter = new HorizontalCollectionAdapter(collectionList, context);
         collectionHolder.rv_collection.setAdapter(horizontalCollectionAdapter);
 
     }
 
+    @Override
+    public void loadMoreFromPerson(ParentPerson parentPerson, RecyclerView.ViewHolder holder) {
+        for (PersonCrew personCrew : parentPerson.getCrew()) {
+            posterList.add(personCrew.getPosterPath());
+        }
+        Log.d("panjang list", posterList.size()+"");
+
+        horizontalAuthorAdapter = new HorizontalAuthorAdapter(posterList, context);
+        MoreFromAuthorHolder moreFromAuthorHolder = (MoreFromAuthorHolder) holder;
+        moreFromAuthorHolder.rv_more_from_author.setHasFixedSize(true);
+        moreFromAuthorHolder.rv_more_from_author.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        moreFromAuthorHolder.rv_more_from_author.setItemAnimator(new DefaultItemAnimator());
+        moreFromAuthorHolder.rv_more_from_author.setAdapter(horizontalAuthorAdapter);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     public class RatingHolder extends RecyclerView.ViewHolder {
         public RatingHolder(View itemView) {
@@ -203,8 +246,4 @@ public class MoreInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
 }

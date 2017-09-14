@@ -13,12 +13,14 @@ import com.example.mikie.moviereview.model.ParentBackdropPoster;
 import com.example.mikie.moviereview.model.ParentCastingCrew;
 import com.example.mikie.moviereview.model.ParentCollection;
 import com.example.mikie.moviereview.model.ParentMovie;
+import com.example.mikie.moviereview.model.ParentPerson;
 import com.example.mikie.moviereview.model.ParentReview;
 import com.example.mikie.moviereview.model.ParentVideo;
 import com.example.mikie.moviereview.presenter.CastingMoviePresenter;
 import com.example.mikie.moviereview.presenter.CollectionMoviePresenter;
 import com.example.mikie.moviereview.presenter.DetailMoviePresenter;
 import com.example.mikie.moviereview.presenter.ListMoviePresenter;
+import com.example.mikie.moviereview.presenter.MoreFromPersonPresenter;
 import com.example.mikie.moviereview.presenter.TrailerMoviePresenter;
 import com.example.mikie.moviereview.presenter.PosterMoviePresenter;
 import com.example.mikie.moviereview.presenter.ReviewMoviePresenter;
@@ -43,6 +45,7 @@ public class MovieServiceImpl implements MovieService {
     private ReviewMoviePresenter reviewMoviePresenter;
     private TrailerMoviePresenter trailerMoviePresenter;
     private CollectionMoviePresenter collectionMoviePresenter;
+    private MoreFromPersonPresenter moreFromPersonPresenter;
     private ProgressDialog dialog;
     private RecyclerView.ViewHolder holder;
 
@@ -79,6 +82,13 @@ public class MovieServiceImpl implements MovieService {
     public MovieServiceImpl(CollectionMoviePresenter collectionMoviePresenter, Context context, RecyclerView.ViewHolder holder) {
         this.context = context;
         this.collectionMoviePresenter = collectionMoviePresenter;
+        this.holder = holder;
+    }
+
+
+    public MovieServiceImpl(MoreFromPersonPresenter moreFromPersonPresenter, Context context, RecyclerView.ViewHolder holder) {
+        this.context = context;
+        this.moreFromPersonPresenter = moreFromPersonPresenter;
         this.holder = holder;
     }
 
@@ -263,5 +273,28 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void similarMovie(String id, String language) {
 
+    }
+
+    @Override
+    public void moreFromPerson(String id, String language) {
+        Observable<ParentPerson> observable =  api.getSimilarFromPerson(id, context.getString(R.string.api_key), language);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ParentPerson>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("error more from person ", e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ParentPerson parentPerson) {
+                        moreFromPersonPresenter.loadMoreFromPerson(parentPerson, holder);
+                    }
+                });
     }
 }
